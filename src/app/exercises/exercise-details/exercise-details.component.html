@@ -1,0 +1,77 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-dark text-white">
+      <h2>Exercise Details</h2>
+    </div>
+    <div class="card-body" *ngIf="exercise">
+      <form [formGroup]="exerciseForm" *ngIf="editMode">
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Exercise name:</strong></div>
+          <div class="col-md-9">
+            <input formControlName="name" class="form-control" [class.is-invalid]="exerciseForm.get('name')?.invalid && exerciseForm.get('name')?.touched" />
+            <div *ngIf="exerciseForm.get('name')?.invalid && exerciseForm.get('name')?.touched" class="invalid-feedback">
+              Name is required.
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Muscle involved:</strong></div>
+          <div class="col-md-9">
+            <select formControlName="muscleInvolved" class="form-control">
+              <option *ngFor="let muscle of muscles" [value]="muscle">{{ muscle }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Description:</strong></div>
+          <div class="col-md-9">
+            <textarea formControlName="description" class="form-control" [class.is-invalid]="exerciseForm.get('description')?.invalid && exerciseForm.get('description')?.touched"></textarea>
+            <div *ngIf="exerciseForm.get('description')?.invalid && exerciseForm.get('description')?.touched" class="invalid-feedback">
+              Description is required.
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Video tutorial:</strong></div>
+          <div class="col-md-9">
+            <input formControlName="url" class="form-control" [class.is-invalid]="exerciseForm.get('url')?.invalid && exerciseForm.get('url')?.touched"/>
+            <div *ngIf="exerciseForm.get('url')?.invalid && exerciseForm.get('url')?.touched" class="invalid-feedback">
+              URL is required.
+            </div>
+          </div>
+        </div>
+      </form>
+      <div *ngIf="!editMode">
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Exercise name:</strong></div>
+          <div class="col-md-9">{{ exercise.name }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Muscle involved:</strong></div>
+          <div class="col-md-9">{{ exercise.muscleInvolved }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Description:</strong></div>
+          <div class="col-md-9">{{ exercise.description }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3"><strong>Video tutorial:</strong></div>
+          <div class="col-md-9">
+            <iframe *ngIf="isExerciseUrlValid(exercise.url)" [src]="exercise.url | safe" class="w-100"
+                    height="315"></iframe>
+            <div *ngIf="!isExerciseUrlValid(exercise.url)">
+              Exercise url is not correct
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-primary me-2" *ngIf="!editMode" (click)="toggleEdit()">Edit</button>
+        <button class="btn btn-primary me-2" *ngIf="editMode" (click)="save()">Save</button>
+        <button class="btn btn-secondary me-2" *ngIf="editMode" (click)="cancel()">Cancel</button>
+        <button class="btn btn-danger me-2" (click)="delete()">Delete</button>
+        <button class="btn btn-secondary" [routerLink]="'/exercises'">Back</button>
+    </div>
+  </div>
+</div>

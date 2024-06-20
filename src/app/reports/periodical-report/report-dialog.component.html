@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-dark text-white">
+      <h2>Report Details</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <ng-container *ngFor="let field of fields">
+            <div *ngIf="field.name.startsWith('left') || ['weight', 'bodyFat', 'shoulders', 'chest', 'waist', 'abdomen', 'hips'].includes(field.name)" class="row mb-3">
+              <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
+              <div class="col-md-9">{{ getFieldValue(field.name) }}</div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="col-md-6">
+          <ng-container *ngFor="let field of fields">
+            <div *ngIf="field.name.startsWith('right')" class="row mb-3">
+              <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
+              <div class="col-md-9">{{ getFieldValue(field.name) }}</div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-start mb-3">
+        <div *ngFor="let image of data.files" class="me-2">
+          <img [src]="'data:image/jpeg;base64,' + image.content" class="img-thumbnail img-max-size" alt="{{ image.name }}" (click)="openImageDialog(image)" style="cursor: pointer;" />
+        </div>
+      </div>
+      <button class="btn btn-secondary me-2" (click)="onCancel()">Close</button>
+      <button class="btn btn-primary me-2" (click)="onReview()">Review</button>
+    </div>
+  </div>
+</div>

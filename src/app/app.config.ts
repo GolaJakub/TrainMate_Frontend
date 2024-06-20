@@ -1,9 +1,12 @@
 import {APP_INITIALIZER, ApplicationConfig} from '@angular/core';
-import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
 import {provideHttpClient} from "@angular/common/http";
 import {AuthConfig, OAuthService, provideOAuthClient} from "angular-oauth2-oidc";
+import {provideRouter} from "@angular/router";
+import {routes} from "./app.routes";
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {RoleGuard} from "./common/role-guard";
+import {UserStateService} from "./users/user-state.service";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 export const authConfig: AuthConfig = {
   issuer: 'http://localhost:8123/realms/trainmate',
@@ -14,12 +17,17 @@ export const authConfig: AuthConfig = {
   scope: 'openid profile'
 }
 
-function initOAuth(oauthService: OAuthService): Promise<void> {
-  return new Promise((resolve) => {
+function initOAuth(oauthService: OAuthService, userStateService: UserStateService): () => Promise<boolean> {
+  return () => {
     oauthService.configure(authConfig);
     oauthService.setupAutomaticSilentRefresh();
-    oauthService.loadDiscoveryDocumentAndLogin().then(() => resolve());
-  })
+    return oauthService.loadDiscoveryDocumentAndLogin().then(loggedIn => {
+      if (loggedIn) {
+        userStateService.loadCurrentUser();
+      }
+      return loggedIn;
+    });
+  }
 }
 
 export const appConfig: ApplicationConfig = {
@@ -27,18 +35,17 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideOAuthClient(),
+    NgbModule,
     {
       provide: APP_INITIALIZER,
-      useFactory: (oauthService: OAuthService) => {
-        return () => {
-          initOAuth(oauthService);
-        }
-      },
+      useFactory: initOAuth,
       multi: true,
       deps: [
         OAuthService,
+        UserStateService
       ]
-    }
+    }, provideAnimationsAsync(),
+    RoleGuard
 
   ]
 };

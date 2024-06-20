@@ -1,0 +1,17 @@
+.page-link {
+  cursor: pointer;
+  color: black;
+}
+
+.active .page-link {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: white;
+}
+
+.disabled .page-link {
+  cursor: not-allowed;
+  color: #6c757d;
+  background-color: #fff;
+  border-color: #dee2e6;
+}

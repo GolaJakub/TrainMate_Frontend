@@ -1,24 +1,43 @@
-import { Component } from '@angular/core';
-import {RouterLink} from "@angular/router";
-import {OAuthService} from "angular-oauth2-oidc";
+import {Component, OnInit} from '@angular/core';
+import {UserData} from "../users/user-data.model";
+import {UsersService} from "../users/users.service";
+import {RouterLink, RouterLinkActive} from "@angular/router";
+import {NgIf, NgOptimizedImage} from "@angular/common";
+import {UserStateService} from "../users/user-state.service";
 
 @Component({
   selector: 'tm-navbar',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    RouterLinkActive,
+    NgOptimizedImage,
+    NgIf
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
 
-  constructor(private oauthService: OAuthService) {
+  currentUser: UserData | null = null;
+
+  constructor(private usersService: UsersService, private userStateService: UserStateService) {
 
   }
-
   logout() {
-    this.oauthService.logOut();
+    this.usersService.logout();
+  }
+
+  ngOnInit(): void {
+    this.currentUser = this.userStateService.getCurrentUser();
+    this.userStateService.currentUser$.subscribe(
+      userData => {
+        this.currentUser = userData;
+      },
+      error => {
+        console.error('Error fetching user data', error);
+      }
+    );
   }
 
 }

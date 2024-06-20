@@ -1,0 +1,10 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body text-center">
+      <img [src]="'data:image/jpeg;base64,' + data.content" class="img-fluid img-large" alt="{{ data.name }}" />
+    </div>
+    <div class="card-footer text-center">
+      <button class="btn btn-secondary" (click)="onClose()">Close</button>
+    </div>
+  </div>
+</div>

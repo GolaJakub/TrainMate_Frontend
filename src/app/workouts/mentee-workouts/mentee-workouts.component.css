@@ -1,0 +1,87 @@
+.day-header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.task {
+  background-color: #ffc107;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.task-header {
+  font-weight: bold;
+  white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+  overflow: hidden; /* Ukrywa nadmiar tekstu */
+  text-overflow: ellipsis; /* Dodaje wielokropek na końcu przyciętego tekstu */
+}
+
+.task-body {
+  margin-top: 10px;
+  white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+  overflow: hidden; /* Ukrywa nadmiar tekstu */
+  text-overflow: ellipsis; /* Dodaje wielokropek na końcu przyciętego tekstu */
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.accordion-button {
+  font-weight: bold;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #0d6efd;
+  background-color: #e7f1ff;
+}
+
+.accordion-body {
+  background-color: #f8f9fa;
+}
+
+i.fas.fa-chevron-down {
+  transition: transform 0.2s ease;
+}
+
+i.fas.fa-chevron-up {
+  transition: transform 0.2s ease;
+}
+
+.col {
+  padding: 3px;
+}
+
+
+.custom-dialog .mat-dialog-container {
+  background-color: #ffc107; /* Kolor tła zgodny z kartami */
+  color: #000; /* Kolor tekstu */
+  border-radius: 8px; /* Zaokrąglone rogi */
+  padding: 20px; /* Dodanie paddingu */
+}
+
+.custom-dialog .mat-dialog-title {
+  color: #fff; /* Kolor tekstu tytułu */
+  background-color: #333; /* Kolor tła tytułu */
+  padding: 10px; /* Dodanie paddingu do tytułu */
+  border-radius: 6px 6px 0 0; /* Zaokrąglenie rogów górnych */
+}
+
+.custom-dialog .mat-dialog-content {
+  padding: 20px; /* Dodanie paddingu do zawartości */
+}
+
+.custom-dialog .mat-dialog-actions {
+  justify-content: flex-end; /* Wyrównanie przycisków do prawej */
+  padding: 10px 0 0 0; /* Dodanie paddingu do przycisków */
+}
+
+
+

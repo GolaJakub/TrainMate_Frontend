@@ -1,1 +1,92 @@
-<p>exercises works!</p>
+<div class="container mt-4">
+  <div class="">
+    <div class="card shadow">
+      <div
+        class="card-header bg-dark d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
+        <h5 class="display-6 text-nowrap text-capitalize text-white mb-0">Exercises</h5>
+
+        <div class="input-group input-group-sm w-auto">
+          <input class="form-control form-control-sm" type="text" placeholder="Name" [(ngModel)]="searchCriteria.name"
+                 style="width: 180px">
+          <select class="form-select form-select-sm" [(ngModel)]="searchCriteria.muscleGroup" style="width: 180px">
+            <option [ngValue]="null">All muscle groups</option>
+            <option *ngFor="let muscleGroup of muscleGroupsValues" [value]="muscleGroup">{{ muscleGroup }}</option>
+          </select>
+          <select class="form-select form-select-sm" [(ngModel)]="searchCriteria.muscle" style="width: 180px">
+            <option [ngValue]="null">All muscles</option>
+            <option *ngFor="let muscle of getMusclesByMuscleGroup(searchCriteria.muscleGroup)"
+                    [value]="muscle">{{ muscle }}
+            </option>
+          </select>
+          <button class="btn btn-warning btn-smg" type="button" (click)="onSearchButtonClick()" style="margin-left: 4px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"
+                 class="bi bi-search mb-1">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+          </button>
+          <button class="btn btn-warning btn-sm" [routerLink]="['add-exercise']" style="margin-left: 4px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-plus"
+                 viewBox="0 0 16 16">
+              <path d="M8 7v6h1V7h6V6H9V0H8v6H2v1h6z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+              <th class="table-dark">Exercise name</th>
+              <th class="table-dark">Muscle involved</th>
+              <th class="table-dark"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let exercise of exercises">
+              <td class="text-truncate" style="max-width: 100px;">{{ exercise.name }}</td>
+              <td class="text-truncate" style="max-width: 100px;">{{ exercise.muscleInvolved }}</td>
+              <td class="text-center">
+                <a [routerLink]="['exercise-details', exercise.id]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
+                       viewBox="0 0 16 16"
+                       class="bi bi-eye-fill text-warning fs-5 text-primary">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"></path>
+                    <path
+                      d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
+                  </svg>
+                </a>
+
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <nav>
+          <select class="form-select-sm" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+            <option [ngValue]="5">5</option>
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="15">15</option>
+          </select>
+          <ul class="pagination pagination-sm mb-0 justify-content-center">
+            <li class="page-item" [class.disabled]="currentPage === 0">
+              <a class="page-link" aria-label="Previous" (click)="onPageChange(currentPage - 1)">«</a>
+            </li>
+            <li *ngFor="let page of range(totalPages); let i = index" class="page-item"
+                [class.active]="i === currentPage">
+              <a class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+              <a class="page-link" aria-label="Next" (click)="onPageChange(currentPage + 1)">»</a>
+            </li>
+          </ul>
+
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+

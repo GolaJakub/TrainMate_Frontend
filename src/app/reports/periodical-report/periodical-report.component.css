@@ -1,0 +1,12 @@
+.container .card-body .row {
+  align-items: flex-start;
+}
+
+.container .card-body .row .col-md-6 {
+  display: flex;
+  flex-direction: column;
+}
+
+.container .card-body .row .col-md-6 .row {
+  flex: 1;
+}

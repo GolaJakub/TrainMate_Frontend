@@ -1,0 +1,25 @@
+.card {
+  margin-top: 20px;
+}
+
+.card-header {
+  background-color: #343a40;
+  color: white;
+}
+
+.card-body .row {
+  margin-bottom: 15px;
+}
+
+.card-footer {
+  text-align: right;
+}
+
+.is-invalid {
+  border-color: red;
+}
+
+.invalid-feedback {
+  color: red;
+  font-size: 0.875em;
+}

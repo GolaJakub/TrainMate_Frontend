@@ -1,0 +1,5 @@
+.img-large {
+  max-width: 80%;
+  max-height: 80vh;
+  object-fit: contain;
+}

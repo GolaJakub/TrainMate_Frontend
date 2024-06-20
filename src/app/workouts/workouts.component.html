@@ -1,1 +1,20 @@
-<p>workouts works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col" *ngFor="let day of days">
+      <div class="day-header">
+        {{ day }}
+      </div>
+      <div class="task" *ngFor="let task of tasks[day]">
+        <div class="task-header">
+          {{ task.name }}
+        </div>
+        <div class="task-body">
+          <div><fa-icon [icon]="['fas', 'clock']"></fa-icon> {{ task.time }}</div>
+          <div><fa-icon [icon]="['fas', 'heartbeat']"></fa-icon> {{ task.intensity }}%</div>
+          <div><fa-icon [icon]="['fas', 'dumbbell']"></fa-icon> {{ task.weight }}kg</div>
+        </div>
+      </div>
+      <button class="btn btn-warning w-100 mt-2">+</button>
+    </div>
+  </div>
+</div>
