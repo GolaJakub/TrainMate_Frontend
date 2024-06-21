@@ -1,21 +1,21 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {OAuthService} from 'angular-oauth2-oidc';
-import {map, Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { map, Observable } from 'rxjs';
 import {
   TrainingUnitProjection,
   ReportCreateDto,
   ExerciseItemProjection,
   ExerciseReport,
-  WorkoutPlanCreateDto
+  WorkoutPlanCreateDto, WorkoutPlanProjection, TrainingUnitUpdateDto, TrainingUnitDto, ExerciseItemUpdateDto
 } from './workouts.model';
+import { WorkoutPlanUpdateDto } from "../mentees/mentees-list/mentee.model";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class WorkoutsService {
   baseUrl = 'http://localhost:8080/api/tm-core';
 
-  constructor(private httpClient: HttpClient, private oAuthService: OAuthService) {
-  }
+  constructor(private httpClient: HttpClient, private oAuthService: OAuthService) {}
 
   getCurrentTrainingUnits(): Observable<{ [key: string]: ExerciseItemProjection[] }> {
     return this.httpClient.get<TrainingUnitProjection[]>(`${this.baseUrl}/training/current`, {
@@ -86,5 +86,64 @@ export class WorkoutsService {
         }
       }
     );
+  }
+
+  getTrainingUnits(workoutPlanId: number, week: number): Observable<any> {
+    return this.httpClient.get<{ [key: string]: ExerciseItemProjection[] }>(`${this.baseUrl}/training/${workoutPlanId}/get-for-week?week=${week}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+        },
+      });
+  }
+
+  getWorkoutPlanHeader(workoutPlanId: number): Observable<WorkoutPlanProjection> {
+    return this.httpClient.get<WorkoutPlanProjection>(`${this.baseUrl}/workout-plan/${workoutPlanId}/header`,
+      {
+        headers: {
+          'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+        },
+      });
+  }
+
+  addExerciseToTrainingUnit(id: number, trainingUnitDto: TrainingUnitUpdateDto): Observable<void> {
+    return this.httpClient.put<void>(`${this.baseUrl}/training/${id}/add-exercise`, trainingUnitDto, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      },
+    });
+  }
+
+  createTrainingUnit(trainingUnitDto: TrainingUnitDto): Observable<number> {
+    return this.httpClient.post<number>(`${this.baseUrl}/training/create`, trainingUnitDto, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      },
+    });
+  }
+
+  deleteExerciseItem(exerciseItemId: number, dto: { id: number, version: number }): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}/training/exercise/${exerciseItemId}/delete`, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      },
+      body: dto
+    });
+  }
+
+  updateExerciseItem(id: number, exerciseItemUpdateDto: ExerciseItemUpdateDto): Observable<void> {
+    return this.httpClient.put<void>(`${this.baseUrl}/training/exercise/${id}/update`, exerciseItemUpdateDto, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      },
+    });
+  }
+
+  updateWorkoutPlan(workoutPlanId: number, workoutPlanUpdateDto: WorkoutPlanUpdateDto): Observable<void> {
+    return this.httpClient.put<void>(`${this.baseUrl}/workout-plan/${workoutPlanId}/update`, workoutPlanUpdateDto, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      },
+    });
   }
 }

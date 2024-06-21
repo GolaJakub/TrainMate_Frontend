@@ -1,0 +1,36 @@
+.custom-dialog-container {
+  background-color: #fff; /* Dopasowany kolor tła */
+  color: #000; /* Kolor tekstu */
+  border-radius: 8px;
+  padding: 20px;
+  max-height: 80vh; /* Maksymalna wysokość modala */
+  overflow-y: auto; /* Przewijanie w pionie, gdy zawartość przekracza wysokość */
+}
+
+.custom-dialog-title {
+  color: #fff; /* Kolor tekstu tytułu */
+  background-color: #333; /* Kolor tła tytułu */
+  padding: 10px;
+  border-radius: 6px 6px 0 0;
+  position: sticky; /* Pozostaje na górze podczas przewijania */
+  z-index: 1;
+}
+
+.custom-dialog-content {
+  padding: 20px;
+}
+
+.custom-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0 0 0;
+  position: sticky; /* Pozostaje na dole podczas przewijania */
+  bottom: 0;
+  background-color: #fff; /* Dopasowany kolor tła */
+  z-index: 1;
+  .button {
+    color: #fff;
+    background-color: #333;
+    margin-right: 4px;
+  }
+}

@@ -5,6 +5,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {ImageDialog} from "./image-dialog/image-dialog.component";
 import {MenteeService} from "../../mentees/mentee.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {UserStateService} from "../../users/user-state.service";
 
 interface Field {
   name: keyof PeriodicalReportProjection;
@@ -29,7 +30,8 @@ export class ReportDialog {
     @Inject(MAT_DIALOG_DATA) public data: { report: PeriodicalReportProjection, files: FileStorageDto[] },
     private dialog: MatDialog,
     private menteeService: MenteeService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private userStateService: UserStateService
   ) {
     this.fields = [
       { name: 'weight', label: 'Weight' },
@@ -80,5 +82,9 @@ export class ReportDialog {
         this.snackBar.open('Error reviewing report: ' + err.message, 'Close', { duration: 3000 });
       }
     });
+  }
+
+  isReviewVisible(): boolean {
+    return !(this.data.report.reviewed || this.userStateService.getCurrentUser()?.role === 'MENTEE');
   }
 }

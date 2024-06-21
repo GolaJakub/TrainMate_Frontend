@@ -5,6 +5,7 @@ import {NgIf} from "@angular/common";
 import {PeriodicalReportComponent} from "../reports/periodical-report/periodical-report.component";
 import {UserStateService} from "../users/user-state.service";
 import {PersonalDataComponent} from "../users/personal-data/personal-data.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -21,14 +22,14 @@ import {PersonalDataComponent} from "../users/personal-data/personal-data.compon
 export class HomeComponent implements OnInit {
   currentUser: UserData | null = null;
 
-  constructor(private userStateService: UserStateService) {
-  }
+  constructor(private userStateService: UserStateService, private router: Router) {}
 
   ngOnInit(): void {
     this.currentUser = this.userStateService.getCurrentUser();
     this.userStateService.currentUser$.subscribe(
       userData => {
         this.currentUser = userData;
+        this.redirectBasedOnRole();
       },
       error => {
         console.error('Error fetching user data', error);
@@ -36,8 +37,15 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  isMenteeFirstLogin(): boolean {
-    return !!(this.currentUser?.firstLogin && this.currentUser.role === 'MENTEE');
-
+  redirectBasedOnRole(): void {
+    if (this.currentUser?.role === 'PERSONAL_TRAINER') {
+      this.router.navigate(['/mentees']);
+    } else if (this.currentUser?.role === 'MENTEE' && this.currentUser?.firstLogin && this.currentUser?.personalInfo?.firstname) {
+      this.router.navigate(['/periodical-report']);
+    } else if (this.currentUser?.role === 'MENTEE' && this.currentUser?.firstLogin && !this.currentUser?.personalInfo?.firstname) {
+      this.router.navigate(['/personal-data']);
+    } else if (this.currentUser?.role === 'MENTEE' && !this.currentUser?.firstLogin) {
+      this.router.navigate(['/current-workout']);
+    }
   }
 }

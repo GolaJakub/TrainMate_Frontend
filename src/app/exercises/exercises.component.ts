@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {ExerciseService} from "./exercises.service";
-import {ExerciseListItemProjection} from "./exercise.data";
-import {CommonModule, NgForOf} from "@angular/common";
-import {Muscle, MuscleGroup, muscleGroupsValues, muscleToMuscleGroupMap} from "./muscles/muscles.data";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {RouterLink} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ExerciseService } from "./exercises.service";
+import { ExerciseListItemProjection } from "./exercise.data";
+import { CommonModule, NgForOf } from "@angular/common";
+import { Muscle, MuscleGroup, muscleGroupsValues, muscleToMuscleGroupMap } from "./muscles/muscles.data";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'tm-exercises',
@@ -13,7 +13,8 @@ import {RouterLink} from "@angular/router";
     ReactiveFormsModule,
     FormsModule,
     NgForOf,
-    RouterLink
+    RouterLink,
+    CommonModule
   ],
   templateUrl: './exercises.component.html',
   styleUrl: './exercises.component.css'
@@ -32,14 +33,17 @@ export class ExercisesComponent implements OnInit {
     muscleGroup: null
   };
 
+  isMuscleGroupDropdownOpen: boolean = false;
+  isMuscleDropdownOpen: boolean = false;
 
-  constructor(private exerciseService: ExerciseService) {
+  filteredMuscleGroups: MuscleGroup[] = [];
+  filteredMuscles: Muscle[] = [];
 
-  }
+  constructor(private exerciseService: ExerciseService) { }
 
   ngOnInit(): void {
     this.loadExercises();
-
+    this.filteredMuscleGroups = [null as any as MuscleGroup].concat(muscleGroupsValues); // Add null as "ALL"
   }
 
   onSearchButtonClick(): void {
@@ -53,12 +57,44 @@ export class ExercisesComponent implements OnInit {
     })
   }
 
-  getMusclesByMuscleGroup(muscleGroup: MuscleGroup): Muscle[] {
+  getMusclesByMuscleGroup(muscleGroup: MuscleGroup | string): Muscle[] {
     if (!muscleGroup) {
       return Array.from(muscleToMuscleGroupMap.keys());
     } else {
       return Array.from(muscleToMuscleGroupMap.keys()).filter(muscle => muscleToMuscleGroupMap.get(muscle) === muscleGroup);
     }
+  }
+
+  filterMuscleGroups() {
+    this.filteredMuscleGroups = [null as any as MuscleGroup].concat(
+      muscleGroupsValues.filter(name => !this.searchCriteria.muscleGroup || name.toLowerCase().includes(this.searchCriteria.muscleGroup.toLowerCase()))
+    );
+  }
+
+  filterMuscles() {
+    const muscles = this.getMusclesByMuscleGroup(this.searchCriteria.muscleGroup);
+    this.filteredMuscles = [null as any as Muscle].concat(
+      muscles.filter(muscle => !this.searchCriteria.muscle || muscle.toLowerCase().includes(this.searchCriteria.muscle.toLowerCase()))
+    );
+  }
+
+  toggleMuscleGroupDropdown() {
+    this.isMuscleGroupDropdownOpen = !this.isMuscleGroupDropdownOpen;
+  }
+
+  toggleMuscleDropdown() {
+    this.isMuscleDropdownOpen = !this.isMuscleDropdownOpen;
+  }
+
+  selectMuscleGroup(muscleGroup: MuscleGroup | null) {
+    this.searchCriteria.muscleGroup = muscleGroup;
+    this.isMuscleGroupDropdownOpen = false;
+    this.filterMuscles();
+  }
+
+  selectMuscle(muscle: Muscle | null) {
+    this.searchCriteria.muscle = muscle;
+    this.isMuscleDropdownOpen = false;
   }
 
   range(n: number) {

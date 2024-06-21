@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {MenteeProjection, MenteeSearchCriteria, WorkoutPlan} from './mentees-list/mentee.model';
+import {MenteeProjection, MenteeSearchCriteria, WorkoutPlan, WorkoutPlanUpdateDto} from './mentees-list/mentee.model';
 import { Page } from '../common/page';
 import {OAuthService} from "angular-oauth2-oidc";
 import {FileStorageDto, PeriodicalReportProjection} from "../reports/periodical-report/reports.model";
@@ -43,6 +43,14 @@ export class MenteeService {
     return this.httpClient.get<WorkoutPlan[]>(`${this.baseUrl}/workout-plan/${keycloakId}/all`, { headers });
   }
 
+  getWorkoutPlansForCurrentlyLoggedUser(): Observable<WorkoutPlan[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
+      'Content-Type': 'application/json'
+    });
+    return this.httpClient.get<WorkoutPlan[]>(`${this.baseUrl}/workout-plan/my-plans`, { headers });
+  }
+
   getInitialReport(keycloakId: string): Observable<PeriodicalReportProjection> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
@@ -74,6 +82,33 @@ export class MenteeService {
     });
     return this.httpClient.post<void>(`${this.baseUrl}/workout-plan/report/${reportId}/review`, dto, { headers });
   }
+
+  deleteWorkoutPlan(workoutPlanId: number, dto: { id: number, version: number }): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}/workout-plan/${workoutPlanId}/delete`, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      },
+      body: dto
+    });
+  }
+
+  activateAccount(userId: string): Observable<void> {
+    return this.httpClient.post<void>(`${this.baseUrl}/mentees/${userId}/activate`,'',{
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      }
+    });
+  }
+
+  deactivateAccount(userId: string): Observable<void> {
+    return this.httpClient.post<void>(`${this.baseUrl}/mentees/${userId}/deactivate`,'',{
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      }
+    });
+  }
+
+
 
 
 }

@@ -8,12 +8,15 @@
         <div class="row">
           <div class="col-md-6">
             <ng-container *ngFor="let field of fields">
-              <div *ngIf="field.name.startsWith('left') || ['weight', 'bodyFat', 'shoulders', 'chest', 'waist', 'abdomen', 'hips'].includes(field.name)" class="row mb-3">
+              <div
+                *ngIf="field.name.startsWith('left') || ['weight', 'bodyFat', 'shoulders', 'chest', 'waist', 'abdomen', 'hips'].includes(field.name)"
+                class="row mb-3">
                 <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
                 <div class="col-md-9">
-                  <input [formControlName]="field.name" class="form-control" [class.is-invalid]="isInvalid(field.name)" />
+                  <input type="number" [formControlName]="field.name" class="form-control"
+                         [class.is-invalid]="isInvalid(field.name)"/>
                   <div *ngIf="isInvalid(field.name)" class="invalid-feedback">
-                    {{ field.label }} is required.
+                    {{ field.label }} is required and must be valid.
                   </div>
                 </div>
               </div>
@@ -24,9 +27,10 @@
               <div *ngIf="field.name.startsWith('right')" class="row mb-3">
                 <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
                 <div class="col-md-9">
-                  <input [formControlName]="field.name" class="form-control" [class.is-invalid]="isInvalid(field.name)" />
+                  <input type="number" [formControlName]="field.name" class="form-control"
+                         [class.is-invalid]="isInvalid(field.name)"/>
                   <div *ngIf="isInvalid(field.name)" class="invalid-feedback">
-                    {{ field.label }} is required.
+                    {{ field.label }} is required and must be valid.
                   </div>
                 </div>
               </div>
@@ -38,13 +42,12 @@
                 <div formArrayName="images" class="border p-3">
                   <div class="row mb-3" *ngFor="let image of imageControls; let i = index">
                     <div class="col-md-9">
-                      <input type="file" (change)="handleFileInput($event, i)" class="form-control" [class.is-invalid]="image.invalid && image.touched" />
-                      <div *ngIf="image.invalid && image.touched" class="invalid-feedback">
-                        Image is required.
-                      </div>
+                      <input type="file" (change)="handleFileInput($event, i)" class="form-control"/>
                     </div>
                     <div class="col-md-3">
-                      <button type="button" class="btn btn-danger" (click)="removeImageField(i)" *ngIf="image.get('name')?.value">Remove</button>
+                      <button type="button" class="btn btn-danger" (click)="removeImageField(i)"
+                              *ngIf="image.get('name')?.value">Remove
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -56,10 +59,8 @@
       </form>
     </div>
     <div class="card-footer">
-      <button class="btn btn-primary me-2" (click)="onSubmit()">Save</button>
-      <button class="btn btn-secondary me-2" (click)="onCancel()">Cancel</button>
-      <button class="btn btn-danger me-2" (click)="onDelete()">Delete</button>
-      <button class="btn btn-secondary" [routerLink]="'/periodical-reports'">Back</button>
+      <button class="btn btn-primary me-2" (click)="onSubmit()" >Save</button>
+      <button class="btn btn-secondary me-2" (click)="onCancel()" *ngIf="!isMenteeFirstLogin()">Cancel</button>
     </div>
   </div>
 </div>

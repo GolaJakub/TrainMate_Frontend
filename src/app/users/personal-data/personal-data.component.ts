@@ -83,10 +83,8 @@ export class PersonalDataComponent implements OnInit {
           this.snackBar.open('Personal data saved successfully!', 'OK', { duration: 3000 });
           if (this.isMenteeFirstLogin()) {
             this.router.navigate(['/periodical-report']);
-          } else {
-            // TODO przekierowanie po uzupelnieniu danych osobowych czy robimy jesli tak to jakie
           }
-
+          this.userStateService.loadCurrentUser();
         },
         error: (message) => {
           this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
@@ -95,6 +93,10 @@ export class PersonalDataComponent implements OnInit {
     } else {
       this.menteeDetailsForm.markAllAsTouched();
     }
+  }
+
+  onCancel(): void {
+    window.history.back();
   }
 
 }

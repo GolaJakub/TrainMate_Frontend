@@ -1,0 +1,39 @@
+<div class="custom-dialog-container">
+  <h2 class="custom-dialog-title">Report Exercise: {{ data.task.name }}</h2>
+  <div class="custom-dialog-content">
+    <div class="accordion" id="setsAccordion">
+      <div class="accordion-item" *ngFor="let set of data.reportSets; let i = index">
+        <h2 class="accordion-header" id="heading{{ i }}">
+          <button class="accordion-button d-flex justify-content-between align-items-center" type="button" (click)="toggleSet(i)">
+            Set {{ i + 1 }}
+            <i [ngClass]="expandedSets[i] ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+          </button>
+        </h2>
+        <div class="accordion-collapse" [ngClass]="{'collapse': !expandedSets[i], 'show': expandedSets[i]}">
+          <div class="accordion-body">
+            <div class="mb-3">
+              <label for="weight-{{ i }}" class="form-label">Weight (kg)</label>
+              <input type="number" class="form-control" id="weight-{{ i }}" [(ngModel)]="set.reportedWeight">
+            </div>
+            <div class="mb-3">
+              <label for="reps-{{ i }}" class="form-label">Reps</label>
+              <input type="number" class="form-control" id="reps-{{ i }}" [(ngModel)]="set.reportedRepetitions">
+            </div>
+            <div class="mb-3">
+              <label for="rir-{{ i }}" class="form-label">RIR</label>
+              <input type="number" class="form-control" id="rir-{{ i }}" [(ngModel)]="set.reportedRir">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="notes" class="form-label">Notes</label>
+      <textarea class="form-control" id="notes" [(ngModel)]="data.reportNotes"></textarea>
+    </div>
+  </div>
+  <div class="custom-dialog-actions">
+    <button mat-button mat-dialog-close class="button">Close</button>
+    <button mat-button class="button" *ngIf="isMentee()" (click)="submitReport()">Submit Report</button>
+  </div>
+</div>

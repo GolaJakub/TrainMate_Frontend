@@ -10,7 +10,7 @@ import {
   faHeartbeat,
   faRedo,
   faStopwatch,
-  faSync, faTimesCircle
+  faSync, faTimesCircle, faTrash, faEdit
 } from '@fortawesome/free-solid-svg-icons';
 
 bootstrapApplication(AppComponent, {
@@ -22,4 +22,4 @@ bootstrapApplication(AppComponent, {
 }).catch(err => console.error(err));
 
 const library = new FaIconLibrary();
-library.addIcons(faClock, faHeartbeat, faDumbbell, faSync, faRedo, faStopwatch, faCheckCircle, faTimesCircle);
+library.addIcons(faClock, faHeartbeat, faDumbbell, faSync, faRedo, faStopwatch, faCheckCircle, faTimesCircle, faTrash, faEdit);

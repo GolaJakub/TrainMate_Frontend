@@ -16,7 +16,15 @@
           <p><strong>Email:</strong> {{ mentee?.email }}</p>
           <p><strong>Gender:</strong> {{ mentee?.gender }}</p>
           <p><strong>Height:</strong> {{ mentee?.height }} cm</p>
+          <p>
+            <strong>Status:</strong>
+            <span [ngClass]="{'text-success': mentee?.active, 'text-danger': !mentee?.active}">
+              {{ mentee?.active ? 'Active' : 'Inactive' }}
+            </span>
+          </p>
           <button class="btn btn-primary" *ngIf="!mentee?.firstLogin" (click)="openInitialReportModal()">Initial Report</button>
+          <button class="btn btn-success me-2" *ngIf="!mentee?.active" (click)="activateAccount()">Activate Account</button>
+          <button class="btn btn-danger me-2" *ngIf="mentee?.active" (click)="deactivateAccount()">Deactivate Account</button>
         </div>
       </div>
     </div>
@@ -60,6 +68,8 @@
             <td class="text-center">
               <button (click)="openReportModal(plan.report.id)" *ngIf="plan.report.id !== null" class="btn btn-sm btn-primary">Show Report</button>
               <a [routerLink]="['/workout-plan-details', plan.id]" class="btn btn-sm btn-warning">Plan Details</a>
+              <button (click)="deleteWorkoutPlan(plan)" class="btn btn-sm btn-danger"><fa-icon [icon]="['fas', 'trash']"></fa-icon></button>
+              <a [routerLink]="['/workout-plan/edit', plan.id]" class="btn btn-sm btn-primary"><fa-icon [icon]="['fas', 'edit']"></fa-icon></a>
             </td>
           </tr>
           </tbody>
@@ -67,24 +77,6 @@
       </div>
     </div>
     <div class="card-footer">
-      <nav>
-        <select class="form-select-sm" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
-          <option [ngValue]="5">5</option>
-          <option [ngValue]="10">10</option>
-          <option [ngValue]="15">15</option>
-        </select>
-        <ul class="pagination pagination-sm mb-0 justify-content-center">
-          <li class="page-item" [class.disabled]="currentPage === 0">
-            <a class="page-link" aria-label="Previous" (click)="onPageChange(currentPage - 1)">«</a>
-          </li>
-          <li *ngFor="let page of range(totalPages); let i = index" class="page-item" [class.active]="i === currentPage">
-            <a class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</a>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
-            <a class="page-link" aria-label="Next" (click)="onPageChange(currentPage + 1)">»</a>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 </div>

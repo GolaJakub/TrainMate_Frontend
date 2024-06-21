@@ -12,6 +12,7 @@ export interface MenteeProjection {
   height: number;
   userId: { keycloakId: string };
   firstLogin: boolean;
+  active: boolean;
 }
 
 export interface WorkoutPlan {
@@ -25,6 +26,7 @@ export interface WorkoutPlan {
     id: number | null;
     reviewed: boolean | null;
   };
+  version: number
 }
 
 export class MenteeSearchCriteria {
@@ -35,5 +37,14 @@ export class MenteeSearchCriteria {
   page: number = 0;
   pageSize: number = 5;
   sort: string = 'lastname,asc';
+}
+
+export interface WorkoutPlanUpdateDto {
+  id: number;
+  version: number;
+  name: string;
+  category: string;
+  startDate: Date;
+  durationInWeeks: number;
 }
 

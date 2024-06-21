@@ -3,12 +3,13 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {ReportDialog} from "../../reports/periodical-report/report-dialog.component";
-import {MenteeProjection, WorkoutPlan} from "../mentees-list/mentee.model";
-import {MenteeService} from "../mentee.service";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import { ReportDialog } from '../../reports/periodical-report/report-dialog.component';
+import {MenteeProjection, WorkoutPlan, WorkoutPlanUpdateDto} from '../mentees-list/mentee.model';
+import { MenteeService } from '../mentee.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {WorkoutsService} from "../../workouts/workouts.service";
 
 @Component({
   selector: 'app-mentee-details',
@@ -18,11 +19,11 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     ReactiveFormsModule,
     FormsModule,
     NgForOf,
-    RouterLink,
     FontAwesomeModule,
     NgClass,
     DatePipe,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   styleUrls: ['./mentee-details.component.css']
 })
@@ -31,7 +32,6 @@ export class MenteeDetailsComponent implements OnInit {
   workoutPlans: WorkoutPlan[] = [];
   pageSize = 5;
   currentPage = 0;
-  totalPages = 1;
   faCheckCircle = faCheckCircle;
   faTimesCircle = faTimesCircle;
 
@@ -40,7 +40,8 @@ export class MenteeDetailsComponent implements OnInit {
     private menteeService: MenteeService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private workoutsService: WorkoutsService
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +59,6 @@ export class MenteeDetailsComponent implements OnInit {
     this.menteeService.getWorkoutPlans(userId).subscribe(
       plans => {
         this.workoutPlans = plans;
-        this.totalPages = Math.ceil(plans.length / this.pageSize);
       },
       error => console.error('Error fetching workout plans', error)
     );
@@ -106,25 +106,44 @@ export class MenteeDetailsComponent implements OnInit {
     );
   }
 
-  range(totalPages: number): number[] {
-    return Array(totalPages).fill(0).map((x, i) => i);
+  deleteWorkoutPlan(workoutPlan: WorkoutPlan): void {
+    const dto = { id: workoutPlan.id, version: workoutPlan.version };  // Prepare the BasicAuditDto
+    this.menteeService.deleteWorkoutPlan(workoutPlan.id, dto).subscribe({
+      next: () => {
+        this.snackBar.open('Workout plan deleted successfully!', 'Close', { duration: 3000 });
+        this.loadWorkoutPlans(this.mentee!.userId.keycloakId);
+      },
+      error: (err) => {
+        this.snackBar.open('Error deleting workout plan: ' + err.error[0].description, 'Close', { duration: 3000 });
+      }
+    });
   }
 
-  onPageChange(page: number): void {
-    if (page >= 0 && page < this.totalPages) {
-      this.currentPage = page;
+  activateAccount(): void {
+    if (this.mentee) {
+      this.menteeService.activateAccount(this.mentee.userId.keycloakId).subscribe({
+        next: () => {
+          this.snackBar.open('Account activated successfully!', 'OK', { duration: 3000 });
+          this.mentee!.active = true;
+        },
+        error: () => {
+          this.snackBar.open('Error activating account', 'Close', { duration: 3000 });
+        }
+      });
     }
   }
 
-  onPageSizeChange(size: number): void {
-    this.pageSize = size;
-    this.totalPages = Math.ceil(this.workoutPlans.length / this.pageSize);
-    if (this.currentPage >= this.totalPages) {
-      this.currentPage = this.totalPages - 1;
+  deactivateAccount(): void {
+    if (this.mentee) {
+      this.menteeService.deactivateAccount(this.mentee.userId.keycloakId).subscribe({
+        next: () => {
+          this.snackBar.open('Account deactivated successfully!', 'OK', { duration: 3000 });
+          this.mentee!.active = false;
+        },
+        error: () => {
+          this.snackBar.open('Error deactivating account', 'Close', { duration: 3000 });
+        }
+      });
     }
-  }
-
-  addWorkoutPlan(menteeId: string): void {
-    this.router.navigate(['/workout-plan/create', menteeId]);
   }
 }

@@ -11,6 +11,7 @@ import {
 } from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
 import {SafePipe} from "../../common/safe.pipe";
+import {ExerciseReportDialog} from "../exercise-report-dialog/exercise-report-dialog.component";
 
 @Component({
   selector: 'tm-mentee-workouts',
@@ -62,10 +63,8 @@ export class MenteeWorkoutsComponent implements OnInit {
   openReportModal(task: ExerciseItemProjection): void {
     this.selectedTask = task;
     this.expandedSets = {};
-    debugger;
     if (task.reported) {
       this.workoutsService.getExerciseReport(task.id).subscribe((report: ExerciseReport) => {
-        debugger;
         this.reportSets = report.reportedSets;
         this.reportNotes = report.remarks;
         this.dialog.open(ExerciseReportDialog, {
@@ -194,123 +193,4 @@ export class ExerciseDetailDialog {
   }
 }
 
-@Component({
-  selector: 'exercise-report-dialog',
-  template: `
-    <div class="custom-dialog-container">
-      <h2 class="custom-dialog-title">Report Exercise: {{ data.task.name }}</h2>
-      <div class="custom-dialog-content">
-        <div class="accordion" id="setsAccordion">
-          <div class="accordion-item" *ngFor="let set of data.reportSets; let i = index">
-            <h2 class="accordion-header" id="heading{{ i }}">
-              <button class="accordion-button d-flex justify-content-between align-items-center" type="button" (click)="toggleSet(i)">
-                Set {{ i + 1 }}
-                <i [ngClass]="expandedSets[i] ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
-              </button>
-            </h2>
-            <div class="accordion-collapse" [ngClass]="{'collapse': !expandedSets[i], 'show': expandedSets[i]}">
-              <div class="accordion-body">
-                <div class="mb-3">
-                  <label for="weight-{{ i }}" class="form-label">Weight (kg)</label>
-                  <input type="number" class="form-control" id="weight-{{ i }}" [(ngModel)]="set.reportedWeight">
-                </div>
-                <div class="mb-3">
-                  <label for="reps-{{ i }}" class="form-label">Reps</label>
-                  <input type="number" class="form-control" id="reps-{{ i }}" [(ngModel)]="set.reportedRepetitions">
-                </div>
-                <div class="mb-3">
-                  <label for="rir-{{ i }}" class="form-label">RIR</label>
-                  <input type="number" class="form-control" id="rir-{{ i }}" [(ngModel)]="set.reportedRir">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="notes" class="form-label">Notes</label>
-          <textarea class="form-control" id="notes" [(ngModel)]="data.reportNotes"></textarea>
-        </div>
-      </div>
-      <div class="custom-dialog-actions">
-        <button mat-button mat-dialog-close class="button">Close</button>
-        <button mat-button class="button" (click)="submitReport()">Submit Report</button>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .custom-dialog-container {
-      background-color: #fff; /* Dopasowany kolor tła */
-      color: #000; /* Kolor tekstu */
-      border-radius: 8px;
-      padding: 20px;
-      max-height: 80vh; /* Maksymalna wysokość modala */
-      overflow-y: auto; /* Przewijanie w pionie, gdy zawartość przekracza wysokość */
-    }
 
-    .custom-dialog-title {
-      color: #fff; /* Kolor tekstu tytułu */
-      background-color: #333; /* Kolor tła tytułu */
-      padding: 10px;
-      border-radius: 6px 6px 0 0;
-      position: sticky; /* Pozostaje na górze podczas przewijania */
-      z-index: 1;
-    }
-
-    .custom-dialog-content {
-      padding: 20px;
-    }
-
-    .custom-dialog-actions {
-      display: flex;
-      justify-content: flex-end;
-      padding: 10px 0 0 0;
-      position: sticky; /* Pozostaje na dole podczas przewijania */
-      bottom: 0;
-      background-color: #fff; /* Dopasowany kolor tła */
-      z-index: 1;
-      .button {
-        color: #fff;
-        background-color: #333;
-        margin-right: 4px;
-      }
-    }
-  `],
-  imports: [
-    MatButton,
-    MatDialogClose,
-    FormsModule,
-    NgClass,
-    NgForOf
-  ],
-  standalone: true
-})
-export class ExerciseReportDialog {
-  expandedSets: { [key: number]: boolean } = {};
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { task: ExerciseItemProjection, reportSets: SetParams[], reportNotes: string, closeReportModal: () => void, fetchTrainingUnits: () => void, snackBar: MatSnackBar , version: number}, private dialogRef: MatDialogRef<ExerciseReportDialog>, private workoutsService: WorkoutsService) {}
-
-  toggleSet(index: number): void {
-    this.expandedSets[index] = !this.expandedSets[index];
-  }
-
-  submitReport(): void {
-    const reportCreateDto: ReportCreateDto = {
-      exerciseItemId: this.data.task.id,
-      sets: this.data.reportSets,
-      remarks: this.data.reportNotes,
-      version: this.data.version
-    };
-
-    this.workoutsService.reportExercise(reportCreateDto).subscribe({
-      next: () => {
-        this.data.snackBar.open('Report submitted successfully!', 'Close', { duration: 3000 });
-        this.data.closeReportModal();
-        this.data.fetchTrainingUnits();
-        this.dialogRef.close();
-      },
-      error: (message) => {
-        this.data.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
-      }
-    });
-  }
-}

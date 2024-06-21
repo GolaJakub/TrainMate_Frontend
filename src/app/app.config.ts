@@ -6,7 +6,6 @@ import {routes} from "./app.routes";
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {RoleGuard} from "./common/role-guard";
 import {UserStateService} from "./users/user-state.service";
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 export const authConfig: AuthConfig = {
   issuer: 'http://localhost:8123/realms/trainmate',
@@ -35,7 +34,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideOAuthClient(),
-    NgbModule,
     {
       provide: APP_INITIALIZER,
       useFactory: initOAuth,

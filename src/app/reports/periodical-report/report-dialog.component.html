@@ -30,7 +30,7 @@
         </div>
       </div>
       <button class="btn btn-secondary me-2" (click)="onCancel()">Close</button>
-      <button class="btn btn-primary me-2" (click)="onReview()">Review</button>
+      <button class="btn btn-primary me-2" *ngIf="isReviewVisible()" (click)="onReview()">Review</button>
     </div>
   </div>
 </div>

@@ -70,4 +70,14 @@ export class ExerciseService {
       body: auditDto
     });
   }
+
+  getAllExercises(): Observable<ExerciseListItemProjection[]> {
+    return this.httpClient.get<ExerciseListItemProjection[]>(`${this.baserUrl}/get-all`, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
+        'Content-Type': 'application/json'
+      },
+    });
+  }
+
 }

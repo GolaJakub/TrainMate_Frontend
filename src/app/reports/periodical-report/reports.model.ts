@@ -52,3 +52,8 @@ export interface PeriodicalReportProjection {
   hips: number;
   createdDate: string;
 }
+
+export interface PeriodicalReportUpdateDto extends PeriodicalReportCreateDto {
+  reportId: number;
+  version: number;
+}

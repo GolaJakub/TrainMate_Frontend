@@ -1,0 +1,53 @@
+<div class="container mt-4">
+
+  <div class="card shadow">
+    <div
+      class="card-header bg-dark text-white d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
+      <h5 class="display-6 text-nowrap text-capitalize text-white mb-0">My Workout Plans</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+          <tr>
+            <th class="table-dark">Name</th>
+            <th class="table-dark">Date From</th>
+            <th class="table-dark">Date To</th>
+            <th class="table-dark text-center">Reported</th>
+            <th class="table-dark text-center">Reviewed</th>
+            <th class="table-dark"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let plan of workoutPlans" class="align-middle">
+            <td class="text-truncate" style="max-width: 100px;">{{ plan.name }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ plan.dateRange.from }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ plan.dateRange.to }}</td>
+            <td class="text-truncate text-center" style="max-width: 50px;">
+              <fa-icon [icon]="plan.report.id !== null ? faCheckCircle : faTimesCircle"
+                       [ngClass]="{'text-success': plan.report.id !== null, 'text-danger': plan.report.id === null}"></fa-icon>
+            </td>
+            <td class="text-truncate text-center" style="max-width: 50px;">
+              <fa-icon [icon]="plan.report.reviewed === true ? faCheckCircle : faTimesCircle"
+                       [ngClass]="{'text-success': plan.report.reviewed === true, 'text-danger': plan.report.reviewed !== true}"></fa-icon>
+            </td>
+            <td class="text-center">
+              <button (click)="openReportModal(plan.report.id)" *ngIf="plan.report.id !== null && plan.report.reviewed"
+                      class="btn btn-sm btn-primary">Report
+              </button>
+              <button [routerLink]="['/periodical-report', plan.id, { reportId: plan.report.id }]" *ngIf="plan.report.id !== null && !plan.report.reviewed"
+                      class="btn btn-sm btn-primary">Report</button>
+              <button [routerLink]="['/periodical-report', plan.id]" *ngIf="plan.report.id === null"
+                      class="btn btn-sm btn-primary">Add Report
+              </button>
+              <a [routerLink]="['/mentee-workout-plan-details', plan.id]" class="btn btn-sm btn-warning">Plan Details</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer">
+    </div>
+  </div>
+</div>

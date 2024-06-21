@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {ActivatedRoute, Router, withPreloading} from "@angular/router";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { WorkoutsService } from "../workouts.service";
-import {NgIf} from "@angular/common";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'tm-workout-plan-create',
@@ -13,11 +13,14 @@ import {NgIf} from "@angular/common";
     NgIf
   ],
   templateUrl: './workout-plan-create.component.html',
-  styleUrl: './workout-plan-create.component.css'
+  styleUrls: ['./workout-plan-create.component.css']
 })
 export class WorkoutPlanCreateComponent implements OnInit {
   workoutPlanForm: FormGroup;
   userId: string | null = null;
+  workoutPlanId: number | null = null;
+  version: number | null = null;
+  isEditMode: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +31,7 @@ export class WorkoutPlanCreateComponent implements OnInit {
   ) {
     this.workoutPlanForm = this.fb.group({
       name: ['', Validators.required],
-      userId: ['', Validators.required],
+      userId: [''],
       category: ['', Validators.required],
       startDate: ['', Validators.required],
       durationInWeeks: ['', Validators.required],
@@ -37,9 +40,33 @@ export class WorkoutPlanCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('menteeId');
+    this.workoutPlanId = Number(this.route.snapshot.paramMap.get('workoutPlanId'));
+
     if (this.userId) {
       this.workoutPlanForm.patchValue({ userId: this.userId });
     }
+
+    if (this.workoutPlanId) {
+      this.isEditMode = true;
+      this.loadWorkoutPlan(this.workoutPlanId);
+    }
+  }
+
+  loadWorkoutPlan(workoutPlanId: number): void {
+    this.workoutsService.getWorkoutPlanHeader(workoutPlanId).subscribe(
+      (workoutPlan) => {
+        this.workoutPlanForm.patchValue({
+          name: workoutPlan.name,
+          category: workoutPlan.category,
+          startDate: workoutPlan.dateRange.from,
+          durationInWeeks: workoutPlan.duration,
+        });
+        this.version = workoutPlan.version;
+      },
+      (error) => {
+        this.snackBar.open('Error loading workout plan', 'Close', { duration: 3000 });
+      }
+    );
   }
 
   isInvalid(controlName: string): boolean | undefined {
@@ -48,16 +75,37 @@ export class WorkoutPlanCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
+    debugger;
+
     if (this.workoutPlanForm.valid) {
-      this.workoutsService.createWorkoutPlan(this.workoutPlanForm.value).subscribe({
-        next: (response) => {
-          this.snackBar.open('Workout plan created successfully!', 'OK', { duration: 3000 });
-          this.router.navigate(['/mentees/mentee-details', this.workoutPlanForm.value.userId]);
-        },
-        error: (message) => {
-          this.snackBar.open('Error creating workout plan', 'Close', { duration: 3000 });
+      if (this.isEditMode) {
+        debugger;
+        const updateDto = {
+          id: this.workoutPlanId,
+          version: this.version,
+          ...this.workoutPlanForm.value,
+
         }
-      });
+        this.workoutsService.updateWorkoutPlan(this.workoutPlanId!, updateDto).subscribe({
+          next: () => {
+            this.snackBar.open('Workout plan updated successfully!', 'OK', { duration: 3000 });
+            window.history.back();
+          },
+          error: (message) => {
+            this.snackBar.open('Error updating workout plan: ' + message.error[0].description, 'Close', { duration: 3000 });
+          }
+        });
+      } else {
+        this.workoutsService.createWorkoutPlan(this.workoutPlanForm.value).subscribe({
+          next: (response) => {
+            this.snackBar.open('Workout plan created successfully!', 'OK', { duration: 3000 });
+            this.router.navigate(['/mentees/mentee-details', this.workoutPlanForm.value.userId]);
+          },
+          error: () => {
+            this.snackBar.open('Error creating workout plan', 'Close', { duration: 3000 });
+          }
+        });
+      }
     } else {
       this.workoutPlanForm.markAllAsTouched();
     }
@@ -65,25 +113,33 @@ export class WorkoutPlanCreateComponent implements OnInit {
 
   onComplete(): void {
     if (this.workoutPlanForm.valid) {
-      this.workoutsService.createWorkoutPlan(this.workoutPlanForm.value).subscribe({
-        next: (response) => {
-          this.snackBar.open('Workout plan created successfully!', 'OK', { duration: 3000 });
-          this.router.navigate(['/workout-plan-details', response.id]);
-        },
-        error: (message) => {
-          this.snackBar.open('Error creating workout plan', 'Close', { duration: 3000 });
-        }
-      });
+      if (this.isEditMode) {
+        this.workoutsService.updateWorkoutPlan(this.workoutPlanId!, this.workoutPlanForm.value).subscribe({
+          next: () => {
+            this.snackBar.open('Workout plan updated successfully!', 'OK', { duration: 3000 });
+            this.router.navigate(['/workout-plan-details', this.workoutPlanId]);
+          },
+          error: () => {
+            this.snackBar.open('Error updating workout plan', 'Close', { duration: 3000 });
+          }
+        });
+      } else {
+        this.workoutsService.createWorkoutPlan(this.workoutPlanForm.value).subscribe({
+          next: (response) => {
+            this.snackBar.open('Workout plan created successfully!', 'OK', { duration: 3000 });
+            this.router.navigate(['/workout-plan-details', response.value]);
+          },
+          error: () => {
+            this.snackBar.open('Error creating workout plan', 'Close', { duration: 3000 });
+          }
+        });
+      }
     } else {
       this.workoutPlanForm.markAllAsTouched();
     }
   }
 
   onCancel(): void {
-    if (this.userId) {
-      this.router.navigate(['/mentees/mentee-details', this.userId]);
-    } else {
-      this.router.navigate(['/mentees/mentee-details']);
-    }
+    window.history.back();
   }
 }

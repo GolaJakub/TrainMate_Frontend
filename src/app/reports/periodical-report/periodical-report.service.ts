@@ -1,24 +1,63 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {OAuthService} from "angular-oauth2-oidc";
-import {PeriodicalReportCreateDto} from "./reports.model";
-import {Observable} from "rxjs";
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { OAuthService } from "angular-oauth2-oidc";
+import {
+  PeriodicalReportCreateDto,
+  PeriodicalReportProjection,
+  FileStorageDto,
+  PeriodicalReportUpdateDto
+} from "./reports.model";
+import { Observable } from "rxjs";
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PeriodicalReportService {
-  baserUrl = 'http://localhost:8080/api/tm-core/mentees';
+  baseUrl = 'http://localhost:8080/api/tm-core';
 
   constructor(private httpClient: HttpClient, private oAuthService: OAuthService) {
   }
 
-  submitPeriodicalReport(periodicalReportData: PeriodicalReportCreateDto) {
-    return this.httpClient.post<PeriodicalReportCreateDto>(`${this.baserUrl}/initial-report`, periodicalReportData, {
+  submitInitialPeriodicalReport(periodicalReportData: PeriodicalReportCreateDto) {
+    return this.httpClient.post<PeriodicalReportCreateDto>(`${this.baseUrl}/mentees/initial-report`, periodicalReportData, {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
         'Content-Type': 'application/json'
       }
-    })
+    });
   }
 
+  submitPeriodicalReport(periodicalReportData: PeriodicalReportCreateDto) {
+    return this.httpClient.post<PeriodicalReportCreateDto>(`${this.baseUrl}/workout-plan/${periodicalReportData.workoutPlanId}/report`, periodicalReportData, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  }
 
+  updatePeriodicalReport(reportId: number, periodicalReportData: PeriodicalReportUpdateDto) {
+    debugger;
+    return this.httpClient.put<void>(`${this.baseUrl}/workout-plan/report/${reportId}`, periodicalReportData, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+
+  getPeriodicalReport(reportId: number): Observable<PeriodicalReportProjection> {
+    return this.httpClient.get<PeriodicalReportProjection>(`${this.baseUrl}/periodical/${reportId}`, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+
+  getReportFiles(reportId: number): Observable<FileStorageDto[]> {
+    return this.httpClient.get<FileStorageDto[]>(`${this.baseUrl}/file/${reportId}/get-all`, {
+      headers: {
+        'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
+      }
+    });
+  }
 }

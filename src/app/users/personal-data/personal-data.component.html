@@ -26,7 +26,7 @@
     </div>
     <div class="card-footer">
       <button class="btn btn-warning me-2" (click)="save()">Save Changes</button>
-      <button class="btn btn-warning me-2" *ngIf="!isMenteeFirstLogin()" (click)="save()">Cancel</button>
+      <button class="btn btn-warning me-2" *ngIf="!isMenteeFirstLogin()" (click)="onCancel()">Cancel</button>
     </div>
   </div>
 </div>
