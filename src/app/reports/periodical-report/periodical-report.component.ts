@@ -200,16 +200,32 @@ export class PeriodicalReportComponent implements OnInit {
           }
         });
       } else {
-        this.periodicalReportService.submitPeriodicalReport(formattedData).subscribe({
-          next: () => {
-            this.snackBar.open('Periodical report saved successfully!', 'OK', { duration: 3000 });
-            window.history.back();
-            this.userStateService.loadCurrentUser();
-          },
-          error: (message) => {
-            this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
-          }
-        });
+        if (this.workoutPlanId) {
+          this.periodicalReportService.submitPeriodicalReport(formattedData).subscribe({
+            next: () => {
+              this.snackBar.open('Periodical report saved successfully!', 'OK', { duration: 3000 });
+              window.history.back();
+              this.userStateService.loadCurrentUser();
+            },
+            error: (message) => {
+              this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+            }
+          });
+        } else {
+          this.periodicalReportService.submitInitialPeriodicalReport(formattedData).subscribe({
+            next: () => {
+              this.snackBar.open('Initial report saved successfully!', 'OK', { duration: 3000 });
+              window.history.back();
+              this.userStateService.loadCurrentUser();
+            },
+            error: (message) => {
+              this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+            }
+          });
+        }
+
+
+
       }
     } else {
       this.periodicalReportForm.markAllAsTouched();
