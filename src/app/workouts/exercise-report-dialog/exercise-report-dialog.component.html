@@ -14,15 +14,15 @@
           <div class="accordion-body">
             <div class="mb-3">
               <label class="form-label" for="weight-{{ i }}">Weight (kg)</label>
-              <input [(ngModel)]="set.reportedWeight" class="form-control" id="weight-{{ i }}" type="number">
+              <input [(ngModel)]="set.reportedWeight" class="form-control" id="weight-{{ i }}" type="number" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
             </div>
             <div class="mb-3">
               <label class="form-label" for="reps-{{ i }}">Reps</label>
-              <input [(ngModel)]="set.reportedRepetitions" class="form-control" id="reps-{{ i }}" type="number">
+              <input [(ngModel)]="set.reportedRepetitions" class="form-control" id="reps-{{ i }}" type="number" min="0" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             </div>
             <div class="mb-3">
               <label class="form-label" for="rir-{{ i }}">RIR</label>
-              <input [(ngModel)]="set.reportedRir" class="form-control" id="rir-{{ i }}" type="number">
+              <input [(ngModel)]="set.reportedRir" class="form-control" id="rir-{{ i }}" type="number" min="0" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             </div>
           </div>
         </div>
