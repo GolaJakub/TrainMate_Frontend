@@ -1,44 +1,50 @@
 <div class="container mt-4">
   <div class="card shadow">
-    <div class="card-header bg-dark d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
+    <div
+      class="card-header bg-dark d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
       <h5 class="display-6 text-nowrap text-capitalize text-white mb-0">Edit Exercise</h5>
     </div>
     <div class="card-body">
       <form [formGroup]="editExerciseForm">
         <div class="mb-3">
-          <label for="exerciseName" class="form-label">Exercise</label>
+          <label class="form-label" for="exerciseName">Exercise</label>
           <div class="input-group input-group-sm w-auto">
-            <input id="exerciseName" class="form-control form-control-sm dropdown-toggle" type="text" placeholder="Select exercise" aria-expanded="false" (click)="toggleExerciseDropdown()" [(ngModel)]="searchCriteria.name" (input)="filterExercises()" style="width: 180px">
-            <ul class="dropdown-menu" [class.show]="isExerciseDropdownOpen">
-              <li *ngFor="let exercise of filteredExercises" (click)="selectExercise(exercise)" class="dropdown-item">{{ exercise.name }}</li>
+            <input (click)="toggleExerciseDropdown()" (input)="filterExercises()" [(ngModel)]="searchCriteria.name"
+                   [ngModelOptions]="{standalone: true}" aria-expanded="false" class="form-control form-control-sm dropdown-toggle"
+                   id="exerciseName" placeholder="Select exercise" style="width: 180px"
+                   type="text">
+            <ul [class.show]="isExerciseDropdownOpen" class="dropdown-menu">
+              <li (click)="selectExercise(exercise)" *ngFor="let exercise of filteredExercises"
+                  class="dropdown-item">{{ exercise.name }}
+              </li>
             </ul>
           </div>
         </div>
         <div class="mb-3">
-          <label for="repetitions" class="form-label">Repetitions</label>
-          <input id="repetitions" type="number" class="form-control form-control-sm" formControlName="repetitions">
+          <label class="form-label" for="repetitions">Repetitions</label>
+          <input class="form-control form-control-sm" formControlName="repetitions" id="repetitions" type="number">
         </div>
         <div class="mb-3">
-          <label for="tempo" class="form-label">Tempo</label>
-          <input id="tempo" type="text" class="form-control form-control-sm" formControlName="tempo">
+          <label class="form-label" for="tempo">Tempo</label>
+          <input class="form-control form-control-sm" formControlName="tempo" id="tempo" type="text">
         </div>
         <div class="mb-3">
-          <label for="weight" class="form-label">Weight</label>
-          <input id="weight" type="number" class="form-control form-control-sm" formControlName="weight">
+          <label class="form-label" for="weight">Weight</label>
+          <input class="form-control form-control-sm" formControlName="weight" id="weight" type="number">
         </div>
         <div class="mb-3">
-          <label for="rir" class="form-label">RIR</label>
-          <input id="rir" type="number" class="form-control form-control-sm" formControlName="rir">
+          <label class="form-label" for="rir">RIR</label>
+          <input class="form-control form-control-sm" formControlName="rir" id="rir" type="number">
         </div>
         <div class="mb-3">
-          <label for="sets" class="form-label">Sets</label>
-          <input id="sets" type="number" class="form-control form-control-sm" formControlName="sets">
+          <label class="form-label" for="sets">Sets</label>
+          <input class="form-control form-control-sm" formControlName="sets" id="sets" type="number">
         </div>
       </form>
     </div>
     <div class="card-footer">
-      <button class="btn btn-secondary btn-sm me-2" (click)="onCancel()">Close</button>
-      <button class="btn btn-primary btn-sm me-2" (click)="onSave()">Update</button>
+      <button (click)="onCancel()" class="btn btn-secondary btn-sm me-2">Close</button>
+      <button (click)="onSave()" class="btn btn-primary btn-sm me-2">Update</button>
     </div>
   </div>
 </div>

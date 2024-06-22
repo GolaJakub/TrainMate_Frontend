@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { WorkoutsService } from '../../../workouts/workouts.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ExerciseListItemProjection } from '../../../exercises/exercise.data';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {WorkoutsService} from '../../../workouts/workouts.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ExerciseListItemProjection} from '../../../exercises/exercise.data';
 import {ExerciseItemProjection, ExerciseItemUpdateDto} from '../../../workouts/workouts.model';
-import { NgForOf } from "@angular/common";
+import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'tm-edit-exercise-dialog',
@@ -30,7 +30,15 @@ export class EditExerciseDialog implements OnInit {
     private fb: FormBuilder,
     private workoutsService: WorkoutsService,
     public dialogRef: MatDialogRef<EditExerciseDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { task: ExerciseItemProjection; exercises: ExerciseListItemProjection[]; workoutPlanId: number; currentPage: number; trainingUnitId: number; version: number; day: string },
+    @Inject(MAT_DIALOG_DATA) public data: {
+      task: ExerciseItemProjection;
+      exercises: ExerciseListItemProjection[];
+      workoutPlanId: number;
+      currentPage: number;
+      trainingUnitId: number;
+      version: number;
+      day: string
+    },
     private snackBar: MatSnackBar
   ) {
     this.editExerciseForm = this.fb.group({
@@ -58,7 +66,7 @@ export class EditExerciseDialog implements OnInit {
   }
 
   selectExercise(exercise: ExerciseListItemProjection) {
-    this.editExerciseForm.patchValue({ exerciseId: exercise.id });
+    this.editExerciseForm.patchValue({exerciseId: exercise.id});
     this.searchCriteria.name = exercise.name;
     this.isExerciseDropdownOpen = false;
   }
@@ -74,11 +82,11 @@ export class EditExerciseDialog implements OnInit {
 
       this.workoutsService.updateExerciseItem(this.data.task.id, exerciseUpdateDto).subscribe({
         next: () => {
-          this.snackBar.open('Exercise updated successfully!', 'Close', { duration: 3000 });
+          this.snackBar.open('Exercise updated successfully!', 'Close', {duration: 3000});
           this.dialogRef.close('updated');
         },
         error: (err) => {
-          this.snackBar.open('Error updating exercise: ' + err.message, 'Close', { duration: 3000 });
+          this.snackBar.open('Error updating exercise: ' + err.message, 'Close', {duration: 3000});
         }
       });
     }

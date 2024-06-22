@@ -22,7 +22,7 @@ import {ExerciseReportDialog} from "../exercise-report-dialog/exercise-report-di
   templateUrl: './mentee-own-workout-plan.component.html',
   styleUrl: './mentee-own-workout-plan.component.css'
 })
-export class MenteeOwnWorkoutPlanComponent  implements OnInit {
+export class MenteeOwnWorkoutPlanComponent implements OnInit {
   days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   tasks: { [key: string]: ExerciseItemProjection[] } = {};
   trainingUnitIds: { [key: string]: number } = {}; // Nowy obiekt do przechowywania trainingUnitId dla każdego dnia
@@ -37,7 +37,8 @@ export class MenteeOwnWorkoutPlanComponent  implements OnInit {
   workoutPlan: WorkoutPlanProjection | null = null;
   exercises: ExerciseListItemProjection[] = [];
 
-  constructor(private workoutsService: WorkoutsService, private route: ActivatedRoute, private snackBar: MatSnackBar, private dialog: MatDialog, private exercisesService: ExerciseService) {}
+  constructor(private workoutsService: WorkoutsService, private route: ActivatedRoute, private snackBar: MatSnackBar, private dialog: MatDialog, private exercisesService: ExerciseService) {
+  }
 
   ngOnInit(): void {
     this.workoutPlanId = Number(this.route.snapshot.paramMap.get('workoutPlanId'));
@@ -74,15 +75,23 @@ export class MenteeOwnWorkoutPlanComponent  implements OnInit {
   }
 
   convertDayOfWeek(dayOfWeek: string): string | null {
-    switch(dayOfWeek) {
-      case 'MONDAY': return 'Monday';
-      case 'TUESDAY': return 'Tuesday';
-      case 'WEDNESDAY': return 'Wednesday';
-      case 'THURSDAY': return 'Thursday';
-      case 'FRIDAY': return 'Friday';
-      case 'SATURDAY': return 'Saturday';
-      case 'SUNDAY': return 'Sunday';
-      default: return null;
+    switch (dayOfWeek) {
+      case 'MONDAY':
+        return 'Monday';
+      case 'TUESDAY':
+        return 'Tuesday';
+      case 'WEDNESDAY':
+        return 'Wednesday';
+      case 'THURSDAY':
+        return 'Thursday';
+      case 'FRIDAY':
+        return 'Friday';
+      case 'SATURDAY':
+        return 'Saturday';
+      case 'SUNDAY':
+        return 'Sunday';
+      default:
+        return null;
     }
   }
 

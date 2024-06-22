@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { WorkoutsService } from '../../../workouts/workouts.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
+import {WorkoutsService} from '../../../workouts/workouts.service';
 import {
   ExerciseItemProjection,
   ExerciseReport,
   SetParams,
   WorkoutPlanProjection,
 } from '../../../workouts/workouts.model';
-import { ExerciseDetailDialog } from '../../../workouts/mentee-workouts/mentee-workouts.component';
-import { NgClass, NgForOf } from '@angular/common';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ExerciseListItemProjection } from "../../../exercises/exercise.data";
-import { AddExerciseToTrainingUnitDialog } from "./add-exercise-to-training-unit.dialog";
-import { ExerciseService } from "../../../exercises/exercises.service";
+import {ExerciseDetailDialog} from '../../../workouts/mentee-workouts/mentee-workouts.component';
+import {NgClass, NgForOf} from '@angular/common';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {ExerciseListItemProjection} from "../../../exercises/exercise.data";
+import {AddExerciseToTrainingUnitDialog} from "./add-exercise-to-training-unit.dialog";
+import {ExerciseService} from "../../../exercises/exercises.service";
 import {EditExerciseDialog} from "./edit-exercise-dialog";
 import {ExerciseReportDialog} from "../../../workouts/exercise-report-dialog/exercise-report-dialog.component";
 
@@ -44,7 +44,8 @@ export class MenteeWorkoutPlanComponent implements OnInit {
   workoutPlan: WorkoutPlanProjection | null = null;
   exercises: ExerciseListItemProjection[] = [];
 
-  constructor(private workoutsService: WorkoutsService, private route: ActivatedRoute, private snackBar: MatSnackBar, private dialog: MatDialog, private exercisesService: ExerciseService) {}
+  constructor(private workoutsService: WorkoutsService, private route: ActivatedRoute, private snackBar: MatSnackBar, private dialog: MatDialog, private exercisesService: ExerciseService) {
+  }
 
   ngOnInit(): void {
     this.workoutPlanId = Number(this.route.snapshot.paramMap.get('workoutPlanId'));
@@ -88,15 +89,23 @@ export class MenteeWorkoutPlanComponent implements OnInit {
   }
 
   convertDayOfWeek(dayOfWeek: string): string | null {
-    switch(dayOfWeek) {
-      case 'MONDAY': return 'Monday';
-      case 'TUESDAY': return 'Tuesday';
-      case 'WEDNESDAY': return 'Wednesday';
-      case 'THURSDAY': return 'Thursday';
-      case 'FRIDAY': return 'Friday';
-      case 'SATURDAY': return 'Saturday';
-      case 'SUNDAY': return 'Sunday';
-      default: return null;
+    switch (dayOfWeek) {
+      case 'MONDAY':
+        return 'Monday';
+      case 'TUESDAY':
+        return 'Tuesday';
+      case 'WEDNESDAY':
+        return 'Wednesday';
+      case 'THURSDAY':
+        return 'Thursday';
+      case 'FRIDAY':
+        return 'Friday';
+      case 'SATURDAY':
+        return 'Saturday';
+      case 'SUNDAY':
+        return 'Sunday';
+      default:
+        return null;
     }
   }
 
@@ -211,14 +220,14 @@ export class MenteeWorkoutPlanComponent implements OnInit {
   }
 
   deleteExerciseItem(task: ExerciseItemProjection): void {
-    const dto = { id: task.id, version: task.version };  // Prepare the BasicAuditDto
+    const dto = {id: task.id, version: task.version};  // Prepare the BasicAuditDto
     this.workoutsService.deleteExerciseItem(task.id, dto).subscribe({
       next: () => {
-        this.snackBar.open('Exercise item deleted successfully!', 'Close', { duration: 3000 });
+        this.snackBar.open('Exercise item deleted successfully!', 'Close', {duration: 3000});
         this.fetchTrainingUnits();
       },
       error: (err) => {
-        this.snackBar.open('Error deleting exercise item: ' + err.message, 'Close', { duration: 3000 });
+        this.snackBar.open('Error deleting exercise item: ' + err.message, 'Close', {duration: 3000});
       }
     });
   }

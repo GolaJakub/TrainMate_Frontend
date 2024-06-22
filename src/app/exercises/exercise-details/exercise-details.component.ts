@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { NgForOf, NgIf } from '@angular/common';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ExerciseService } from '../exercises.service';
-import { ExerciseProjection } from './exercise-details.model';
-import { SafePipe } from '../../common/safe.pipe';
-import { Muscle } from '../muscles/muscles.data';
+import {NgForOf, NgIf} from '@angular/common';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {ExerciseService} from '../exercises.service';
+import {ExerciseProjection} from './exercise-details.model';
+import {SafePipe} from '../../common/safe.pipe';
+import {Muscle} from '../muscles/muscles.data';
 import {UserStateService} from "../../users/user-state.service";
 
 @Component({
@@ -36,7 +36,8 @@ export class ExerciseDetailsComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     private userStateService: UserStateService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadExercise();
@@ -77,13 +78,13 @@ export class ExerciseDetailsComponent implements OnInit {
 
       this.exerciseService.updateExercise(this.exercise.id, updatedExercise).subscribe({
         next: () => {
-          this.snackBar.open('Exercise updated successfully!', 'Close', { duration: 3000 });
+          this.snackBar.open('Exercise updated successfully!', 'Close', {duration: 3000});
           this.exercise = updatedExercise;
           this.editMode = false;
           this.loadExercise();
         },
         error: (message) => {
-          this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+          this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
         }
       });
     } else {
@@ -96,15 +97,15 @@ export class ExerciseDetailsComponent implements OnInit {
       id: this.exercise.id,
       version: this.exercise.version
     }
-      this.exerciseService.deleteExercise(this.exercise.id, auditDto).subscribe({
-        next: () => {
-          this.snackBar.open('Exercise deleted successfully!', 'Close', { duration: 3000 });
-          this.router.navigate(['/exercises']);
-        },
-        error: (message) => {
-          this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
-        }
-      });
+    this.exerciseService.deleteExercise(this.exercise.id, auditDto).subscribe({
+      next: () => {
+        this.snackBar.open('Exercise deleted successfully!', 'Close', {duration: 3000});
+        this.router.navigate(['/exercises']);
+      },
+      error: (message) => {
+        this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
+      }
+    });
 
   }
 

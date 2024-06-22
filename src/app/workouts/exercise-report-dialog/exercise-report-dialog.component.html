@@ -2,38 +2,39 @@
   <h2 class="custom-dialog-title">Report Exercise: {{ data.task.name }}</h2>
   <div class="custom-dialog-content">
     <div class="accordion" id="setsAccordion">
-      <div class="accordion-item" *ngFor="let set of data.reportSets; let i = index">
+      <div *ngFor="let set of data.reportSets; let i = index" class="accordion-item">
         <h2 class="accordion-header" id="heading{{ i }}">
-          <button class="accordion-button d-flex justify-content-between align-items-center" type="button" (click)="toggleSet(i)">
+          <button (click)="toggleSet(i)" class="accordion-button d-flex justify-content-between align-items-center"
+                  type="button">
             Set {{ i + 1 }}
             <i [ngClass]="expandedSets[i] ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
           </button>
         </h2>
-        <div class="accordion-collapse" [ngClass]="{'collapse': !expandedSets[i], 'show': expandedSets[i]}">
+        <div [ngClass]="{'collapse': !expandedSets[i], 'show': expandedSets[i]}" class="accordion-collapse">
           <div class="accordion-body">
             <div class="mb-3">
-              <label for="weight-{{ i }}" class="form-label">Weight (kg)</label>
-              <input type="number" class="form-control" id="weight-{{ i }}" [(ngModel)]="set.reportedWeight">
+              <label class="form-label" for="weight-{{ i }}">Weight (kg)</label>
+              <input [(ngModel)]="set.reportedWeight" class="form-control" id="weight-{{ i }}" type="number">
             </div>
             <div class="mb-3">
-              <label for="reps-{{ i }}" class="form-label">Reps</label>
-              <input type="number" class="form-control" id="reps-{{ i }}" [(ngModel)]="set.reportedRepetitions">
+              <label class="form-label" for="reps-{{ i }}">Reps</label>
+              <input [(ngModel)]="set.reportedRepetitions" class="form-control" id="reps-{{ i }}" type="number">
             </div>
             <div class="mb-3">
-              <label for="rir-{{ i }}" class="form-label">RIR</label>
-              <input type="number" class="form-control" id="rir-{{ i }}" [(ngModel)]="set.reportedRir">
+              <label class="form-label" for="rir-{{ i }}">RIR</label>
+              <input [(ngModel)]="set.reportedRir" class="form-control" id="rir-{{ i }}" type="number">
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="mb-3">
-      <label for="notes" class="form-label">Notes</label>
-      <textarea class="form-control" id="notes" [(ngModel)]="data.reportNotes"></textarea>
+      <label class="form-label" for="notes">Notes</label>
+      <textarea [(ngModel)]="data.reportNotes" class="form-control" id="notes"></textarea>
     </div>
   </div>
   <div class="custom-dialog-actions">
-    <button mat-button mat-dialog-close class="button">Close</button>
-    <button mat-button class="button" *ngIf="isMentee()" (click)="submitReport()">Submit Report</button>
+    <button class="button" mat-button mat-dialog-close>Close</button>
+    <button (click)="submitReport()" *ngIf="isMentee()" class="button" mat-button>Submit Report</button>
   </div>
 </div>

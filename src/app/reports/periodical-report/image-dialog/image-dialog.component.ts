@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FileStorageDto} from "../reports.model";
 
 @Component({
@@ -12,7 +12,8 @@ export class ImageDialog {
   constructor(
     public dialogRef: MatDialogRef<ImageDialog>,
     @Inject(MAT_DIALOG_DATA) public data: FileStorageDto
-  ) {}
+  ) {
+  }
 
   onClose(): void {
     this.dialogRef.close();

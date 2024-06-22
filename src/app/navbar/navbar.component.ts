@@ -4,6 +4,7 @@ import {UsersService} from "../users/users.service";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {UserStateService} from "../users/user-state.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'tm-navbar',
@@ -21,9 +22,10 @@ export class NavbarComponent implements OnInit {
 
   currentUser: UserData | null = null;
 
-  constructor(private usersService: UsersService, private userStateService: UserStateService) {
+  constructor(private usersService: UsersService, private userStateService: UserStateService, private snackBar: MatSnackBar) {
 
   }
+
   logout() {
     this.usersService.logout();
   }
@@ -34,9 +36,7 @@ export class NavbarComponent implements OnInit {
       userData => {
         this.currentUser = userData;
       },
-      error => {
-        console.error('Error fetching user data', error);
-      }
+      error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
     );
   }
 

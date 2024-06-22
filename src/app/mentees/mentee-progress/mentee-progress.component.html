@@ -7,9 +7,11 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="leftReportSelect" class="form-label">Select Report</label>
-            <select id="leftReportSelect" class="form-select" (change)="onLeftReportChange($event)">
-              <option *ngFor="let report of getFilteredReports('left')" [value]="report.id">{{ report.createdDate | date }}</option>
+            <label class="form-label" for="leftReportSelect">Select Report</label>
+            <select (change)="onLeftReportChange($event)" class="form-select" id="leftReportSelect">
+              <option *ngFor="let report of getFilteredReports('left')"
+                      [value]="report.id">{{ report.createdDate | date }}
+              </option>
             </select>
           </div>
           <ng-container *ngIf="leftSelectedReport">
@@ -22,16 +24,19 @@
             <h5>Images</h5>
             <div class="d-flex justify-content-start mb-3">
               <div *ngFor="let image of leftFiles" class="me-2">
-                <img [src]="'data:image/jpeg;base64,' + image.content" class="img-thumbnail img-max-size" alt="{{ image.name }}" (click)="openImageDialog(image)" style="cursor: pointer;" />
+                <img (click)="openImageDialog(image)" [src]="'data:image/jpeg;base64,' + image.content"
+                     alt="{{ image.name }}" class="img-thumbnail img-max-size" style="cursor: pointer;"/>
               </div>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="rightReportSelect" class="form-label">Select Report</label>
-            <select id="rightReportSelect" class="form-select" (change)="onRightReportChange($event)">
-              <option *ngFor="let report of getFilteredReports('right')" [value]="report.id">{{ report.createdDate | date }}</option>
+            <label class="form-label" for="rightReportSelect">Select Report</label>
+            <select (change)="onRightReportChange($event)" class="form-select" id="rightReportSelect">
+              <option *ngFor="let report of getFilteredReports('right')"
+                      [value]="report.id">{{ report.createdDate | date }}
+              </option>
             </select>
           </div>
           <ng-container *ngIf="rightSelectedReport">
@@ -44,15 +49,13 @@
             <h5>Images</h5>
             <div class="d-flex justify-content-start mb-3">
               <div *ngFor="let image of rightFiles" class="me-2">
-                <img [src]="'data:image/jpeg;base64,' + image.content" class="img-thumbnail img-max-size" alt="{{ image.name }}" (click)="openImageDialog(image)" style="cursor: pointer;" />
+                <img (click)="openImageDialog(image)" [src]="'data:image/jpeg;base64,' + image.content"
+                     alt="{{ image.name }}" class="img-thumbnail img-max-size" style="cursor: pointer;"/>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="card-footer">
-      <button class="btn btn-secondary me-2" (click)="onCancel()">Close</button>
     </div>
   </div>
 </div>

@@ -29,11 +29,11 @@ export class InviteMenteeComponent {
       const email = this.inviteForm.value.email;
       this.inviteMenteeService.invite(email).subscribe({
         next: () => {
-          this.snackBar.open('Mentee invited successfully!', 'Close', { duration: 3000 });
+          this.snackBar.open('Mentee invited successfully!', 'Close', {duration: 3000});
           this.router.navigate(['/mentees']);
         },
         error: (message) => {
-          this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+          this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
         }
       });
     }

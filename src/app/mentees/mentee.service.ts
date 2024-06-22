@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { Observable } from 'rxjs';
-import {MenteeProjection, MenteeSearchCriteria, WorkoutPlan, WorkoutPlanUpdateDto} from './mentees-list/mentee.model';
-import { Page } from '../common/page';
+import {Observable} from 'rxjs';
+import {MenteeProjection, MenteeSearchCriteria, WorkoutPlan} from './mentees-list/mentee.model';
+import {Page} from '../common/page';
 import {OAuthService} from "angular-oauth2-oidc";
 import {FileStorageDto, PeriodicalReportProjection} from "../reports/periodical-report/reports.model";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class MenteeService {
 
   baseUrl = 'http://localhost:8080/api/tm-core';
 
-  constructor(private httpClient: HttpClient, private oAuthService: OAuthService) { }
+  constructor(private httpClient: HttpClient, private oAuthService: OAuthService) {
+  }
 
   searchMentees(criteria: MenteeSearchCriteria): Observable<Page<MenteeProjection>> {
     const params = new HttpParams()
@@ -32,7 +33,7 @@ export class MenteeService {
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.post<MenteeProjection>(`${this.baseUrl}/mentees/${userId}`, {}, { headers });
+    return this.httpClient.post<MenteeProjection>(`${this.baseUrl}/mentees/${userId}`, {}, {headers});
   }
 
   getWorkoutPlans(keycloakId: string): Observable<WorkoutPlan[]> {
@@ -40,7 +41,7 @@ export class MenteeService {
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.get<WorkoutPlan[]>(`${this.baseUrl}/workout-plan/${keycloakId}/all`, { headers });
+    return this.httpClient.get<WorkoutPlan[]>(`${this.baseUrl}/workout-plan/${keycloakId}/all`, {headers});
   }
 
   getWorkoutPlansForCurrentlyLoggedUser(): Observable<WorkoutPlan[]> {
@@ -48,7 +49,7 @@ export class MenteeService {
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.get<WorkoutPlan[]>(`${this.baseUrl}/workout-plan/my-plans`, { headers });
+    return this.httpClient.get<WorkoutPlan[]>(`${this.baseUrl}/workout-plan/my-plans`, {headers});
   }
 
   getInitialReport(keycloakId: string): Observable<PeriodicalReportProjection> {
@@ -56,7 +57,7 @@ export class MenteeService {
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.get<PeriodicalReportProjection>(`${this.baseUrl}/initial/${keycloakId}`, { headers });
+    return this.httpClient.get<PeriodicalReportProjection>(`${this.baseUrl}/initial/${keycloakId}`, {headers});
   }
 
   getPeriodicalReport(reportId: number): Observable<PeriodicalReportProjection> {
@@ -64,7 +65,7 @@ export class MenteeService {
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.get<PeriodicalReportProjection>(`${this.baseUrl}/periodical/${reportId}`, { headers });
+    return this.httpClient.get<PeriodicalReportProjection>(`${this.baseUrl}/periodical/${reportId}`, {headers});
   }
 
   getReportFiles(reportId: number): Observable<FileStorageDto[]> {
@@ -72,7 +73,7 @@ export class MenteeService {
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.get<FileStorageDto[]>(`${this.baseUrl}/file/${reportId}/get-all`, { headers });
+    return this.httpClient.get<FileStorageDto[]>(`${this.baseUrl}/file/${reportId}/get-all`, {headers});
   }
 
   reviewPeriodicalReport(reportId: number, dto: { id: number, version: number }): Observable<void> {
@@ -80,7 +81,7 @@ export class MenteeService {
       'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.post<void>(`${this.baseUrl}/workout-plan/report/${reportId}/review`, dto, { headers });
+    return this.httpClient.post<void>(`${this.baseUrl}/workout-plan/report/${reportId}/review`, dto, {headers});
   }
 
   deleteWorkoutPlan(workoutPlanId: number, dto: { id: number, version: number }): Observable<void> {
@@ -93,7 +94,7 @@ export class MenteeService {
   }
 
   activateAccount(userId: string): Observable<void> {
-    return this.httpClient.post<void>(`${this.baseUrl}/mentees/${userId}/activate`,'',{
+    return this.httpClient.post<void>(`${this.baseUrl}/mentees/${userId}/activate`, '', {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
       }
@@ -101,14 +102,12 @@ export class MenteeService {
   }
 
   deactivateAccount(userId: string): Observable<void> {
-    return this.httpClient.post<void>(`${this.baseUrl}/mentees/${userId}/deactivate`,'',{
+    return this.httpClient.post<void>(`${this.baseUrl}/mentees/${userId}/deactivate`, '', {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
       }
     });
   }
-
-
 
 
 }

@@ -13,8 +13,8 @@
                 class="row mb-3">
                 <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
                 <div class="col-md-9">
-                  <input type="number" [formControlName]="field.name" class="form-control"
-                         [class.is-invalid]="isInvalid(field.name)"/>
+                  <input [class.is-invalid]="isInvalid(field.name)" [formControlName]="field.name" class="form-control"
+                         type="number"/>
                   <div *ngIf="isInvalid(field.name)" class="invalid-feedback">
                     {{ field.label }} is required and must be valid.
                   </div>
@@ -27,8 +27,8 @@
               <div *ngIf="field.name.startsWith('right')" class="row mb-3">
                 <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
                 <div class="col-md-9">
-                  <input type="number" [formControlName]="field.name" class="form-control"
-                         [class.is-invalid]="isInvalid(field.name)"/>
+                  <input [class.is-invalid]="isInvalid(field.name)" [formControlName]="field.name" class="form-control"
+                         type="number"/>
                   <div *ngIf="isInvalid(field.name)" class="invalid-feedback">
                     {{ field.label }} is required and must be valid.
                   </div>
@@ -39,14 +39,14 @@
             <div class="row mb-3">
               <div class="col-md-3"><strong>Images:</strong></div>
               <div class="col-md-9">
-                <div formArrayName="images" class="border p-3">
-                  <div class="row mb-3" *ngFor="let image of imageControls; let i = index">
+                <div class="border p-3" formArrayName="images">
+                  <div *ngFor="let image of imageControls; let i = index" class="row mb-3">
                     <div class="col-md-9">
-                      <input type="file" (change)="handleFileInput($event, i)" class="form-control"/>
+                      <input (change)="handleFileInput($event, i)" class="form-control" type="file"/>
                     </div>
                     <div class="col-md-3">
-                      <button type="button" class="btn btn-danger" (click)="removeImageField(i)"
-                              *ngIf="image.get('name')?.value">Remove
+                      <button (click)="removeImageField(i)" *ngIf="image.get('name')?.value" class="btn btn-danger"
+                              type="button">Remove
                       </button>
                     </div>
                   </div>
@@ -59,8 +59,8 @@
       </form>
     </div>
     <div class="card-footer">
-      <button class="btn btn-primary me-2" (click)="onSubmit()" >Save</button>
-      <button class="btn btn-secondary me-2" (click)="onCancel()" *ngIf="!isMenteeFirstLogin()">Cancel</button>
+      <button (click)="onSubmit()" class="btn btn-primary me-2">Save</button>
+      <button (click)="onCancel()" *ngIf="!isMenteeFirstLogin()" class="btn btn-secondary me-2">Cancel</button>
     </div>
   </div>
 </div>

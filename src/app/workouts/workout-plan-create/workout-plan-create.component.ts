@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, withPreloading} from "@angular/router";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { WorkoutsService } from "../workouts.service";
-import { NgIf } from "@angular/common";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {WorkoutsService} from "../workouts.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'tm-workout-plan-create',
@@ -43,7 +43,7 @@ export class WorkoutPlanCreateComponent implements OnInit {
     this.workoutPlanId = Number(this.route.snapshot.paramMap.get('workoutPlanId'));
 
     if (this.userId) {
-      this.workoutPlanForm.patchValue({ userId: this.userId });
+      this.workoutPlanForm.patchValue({userId: this.userId});
     }
 
     if (this.workoutPlanId) {
@@ -64,7 +64,7 @@ export class WorkoutPlanCreateComponent implements OnInit {
         this.version = workoutPlan.version;
       },
       (error) => {
-        this.snackBar.open('Error loading workout plan', 'Close', { duration: 3000 });
+        this.snackBar.open('Error loading workout plan', 'Close', {duration: 3000});
       }
     );
   }
@@ -85,21 +85,21 @@ export class WorkoutPlanCreateComponent implements OnInit {
         }
         this.workoutsService.updateWorkoutPlan(this.workoutPlanId!, updateDto).subscribe({
           next: () => {
-            this.snackBar.open('Workout plan updated successfully!', 'OK', { duration: 3000 });
+            this.snackBar.open('Workout plan updated successfully!', 'OK', {duration: 3000});
             window.history.back();
           },
           error: (message) => {
-            this.snackBar.open('Error updating workout plan: ' + message.error[0].description, 'Close', { duration: 3000 });
+            this.snackBar.open('Error updating workout plan: ' + message.error[0].description, 'Close', {duration: 3000});
           }
         });
       } else {
         this.workoutsService.createWorkoutPlan(this.workoutPlanForm.value).subscribe({
           next: (response) => {
-            this.snackBar.open('Workout plan created successfully!', 'OK', { duration: 3000 });
+            this.snackBar.open('Workout plan created successfully!', 'OK', {duration: 3000});
             this.router.navigate(['/mentees/mentee-details', this.workoutPlanForm.value.userId]);
           },
           error: () => {
-            this.snackBar.open('Error creating workout plan', 'Close', { duration: 3000 });
+            this.snackBar.open('Error creating workout plan', 'Close', {duration: 3000});
           }
         });
       }
@@ -113,21 +113,21 @@ export class WorkoutPlanCreateComponent implements OnInit {
       if (this.isEditMode) {
         this.workoutsService.updateWorkoutPlan(this.workoutPlanId!, this.workoutPlanForm.value).subscribe({
           next: () => {
-            this.snackBar.open('Workout plan updated successfully!', 'OK', { duration: 3000 });
+            this.snackBar.open('Workout plan updated successfully!', 'OK', {duration: 3000});
             this.router.navigate(['/workout-plan-details', this.workoutPlanId]);
           },
           error: () => {
-            this.snackBar.open('Error updating workout plan', 'Close', { duration: 3000 });
+            this.snackBar.open('Error updating workout plan', 'Close', {duration: 3000});
           }
         });
       } else {
         this.workoutsService.createWorkoutPlan(this.workoutPlanForm.value).subscribe({
           next: (response) => {
-            this.snackBar.open('Workout plan created successfully!', 'OK', { duration: 3000 });
+            this.snackBar.open('Workout plan created successfully!', 'OK', {duration: 3000});
             this.router.navigate(['/workout-plan-details', response.value]);
           },
           error: () => {
-            this.snackBar.open('Error creating workout plan', 'Close', { duration: 3000 });
+            this.snackBar.open('Error creating workout plan', 'Close', {duration: 3000});
           }
         });
       }

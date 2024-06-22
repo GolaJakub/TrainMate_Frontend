@@ -4,11 +4,12 @@
       <h2>Invite Mentee</h2>
     </div>
     <div class="card-body">
-      <form [formGroup]="inviteForm" (ngSubmit)="onInvite()">
+      <form (ngSubmit)="onInvite()" [formGroup]="inviteForm">
         <div class="row mb-3">
           <div class="col-md-3"><strong>Email address:</strong></div>
           <div class="col-md-9">
-            <input formControlName="email" class="form-control" [class.is-invalid]="inviteForm.get('email')?.invalid && inviteForm.get('email')?.touched" />
+            <input [class.is-invalid]="inviteForm.get('email')?.invalid && inviteForm.get('email')?.touched" class="form-control"
+                   formControlName="email"/>
             <div *ngIf="inviteForm.get('email')?.invalid && inviteForm.get('email')?.touched" class="invalid-feedback">
               Valid email is required.
             </div>
@@ -16,7 +17,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 text-right">
-            <button type="submit" class="btn btn-primary">Invite</button>
+            <button class="btn btn-primary" type="submit">Invite</button>
           </div>
         </div>
       </form>

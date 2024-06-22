@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NgForOf, NgIf } from '@angular/common';
-import { PeriodicalReportService } from "./periodical-report.service";
-import { PeriodicalReportCreateDto, PeriodicalReportUpdateDto, PeriodicalReportProjection, FileStorageDto } from "./reports.model";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { UserStateService } from "../../users/user-state.service";
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {NgForOf, NgIf} from '@angular/common';
+import {PeriodicalReportService} from "./periodical-report.service";
+import {FileStorageDto, PeriodicalReportCreateDto, PeriodicalReportUpdateDto} from "./reports.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {UserStateService} from "../../users/user-state.service";
 
 @Component({
   selector: 'tm-periodical-report',
@@ -67,6 +67,10 @@ export class PeriodicalReportComponent implements OnInit {
     this.addImageField(); // Add the initial image field
   }
 
+  get imageControls() {
+    return (this.periodicalReportForm.get('images') as FormArray).controls;
+  }
+
   ngOnInit(): void {
     this.workoutPlanId = this.route.snapshot.paramMap.get('workoutPlanId');
     this.reportId = Number(this.route.snapshot.paramMap.get('reportId'));
@@ -86,13 +90,11 @@ export class PeriodicalReportComponent implements OnInit {
             this.version = report.version;
             this.setImageControls(files);
           },
-          error => {
-            this.snackBar.open('Error fetching report data', 'Close', { duration: 3000 });
-          }
+          error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
         );
       },
       error => {
-        this.snackBar.open('Error fetching report files', 'Close', { duration: 3000 });
+        this.snackBar.open('Error fetching report files', 'Close', {duration: 3000});
       }
     );
   }
@@ -117,10 +119,6 @@ export class PeriodicalReportComponent implements OnInit {
   isInvalid(controlName: string): boolean | undefined {
     const control = this.periodicalReportForm.get(controlName);
     return control?.invalid && control?.touched;
-  }
-
-  get imageControls() {
-    return (this.periodicalReportForm.get('images') as FormArray).controls;
   }
 
   addImageField(): void {
@@ -191,39 +189,38 @@ export class PeriodicalReportComponent implements OnInit {
         };
         this.periodicalReportService.updatePeriodicalReport(this.reportId!, updateData).subscribe({
           next: () => {
-            this.snackBar.open('Periodical report updated successfully!', 'OK', { duration: 3000 });
+            this.snackBar.open('Periodical report updated successfully!', 'OK', {duration: 3000});
             window.history.back();
             this.userStateService.loadCurrentUser();
           },
           error: (message) => {
-            this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+            this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
           }
         });
       } else {
         if (this.workoutPlanId) {
           this.periodicalReportService.submitPeriodicalReport(formattedData).subscribe({
             next: () => {
-              this.snackBar.open('Periodical report saved successfully!', 'OK', { duration: 3000 });
+              this.snackBar.open('Periodical report saved successfully!', 'OK', {duration: 3000});
               window.history.back();
               this.userStateService.loadCurrentUser();
             },
             error: (message) => {
-              this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+              this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
             }
           });
         } else {
           this.periodicalReportService.submitInitialPeriodicalReport(formattedData).subscribe({
             next: () => {
-              this.snackBar.open('Initial report saved successfully!', 'OK', { duration: 3000 });
+              this.snackBar.open('Initial report saved successfully!', 'OK', {duration: 3000});
               window.history.back();
               this.userStateService.loadCurrentUser();
             },
             error: (message) => {
-              this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+              this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
             }
           });
         }
-
 
 
       }
@@ -260,7 +257,7 @@ export class PeriodicalReportComponent implements OnInit {
       hips: formData.hips,
       images: formData.images?.filter((image: any) => image.name) // Filter out empty image fields
         .map((image: any) => ({
-          storageId: image.storageId?.value ? { value: image.storageId.value } : undefined,
+          storageId: image.storageId?.value ? {value: image.storageId.value} : undefined,
           content: image.content,
           name: image.name,
           type: image.type,

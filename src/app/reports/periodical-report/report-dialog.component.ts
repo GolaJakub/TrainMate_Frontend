@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FileStorageDto, PeriodicalReportProjection} from "./reports.model";
 import {NgForOf, NgIf} from "@angular/common";
@@ -34,21 +34,21 @@ export class ReportDialog {
     private userStateService: UserStateService
   ) {
     this.fields = [
-      { name: 'weight', label: 'Weight' },
-      { name: 'bodyFat', label: 'Body Fat' },
-      { name: 'leftBiceps', label: 'Left Biceps' },
-      { name: 'rightBiceps', label: 'Right Biceps' },
-      { name: 'leftForearm', label: 'Left Forearm' },
-      { name: 'rightForearm', label: 'Right Forearm' },
-      { name: 'leftThigh', label: 'Left Thigh' },
-      { name: 'rightThigh', label: 'Right Thigh' },
-      { name: 'leftCalf', label: 'Left Calf' },
-      { name: 'rightCalf', label: 'Right Calf' },
-      { name: 'shoulders', label: 'Shoulders' },
-      { name: 'chest', label: 'Chest' },
-      { name: 'waist', label: 'Waist' },
-      { name: 'abdomen', label: 'Abdomen' },
-      { name: 'hips', label: 'Hips' }
+      {name: 'weight', label: 'Weight'},
+      {name: 'bodyFat', label: 'Body Fat'},
+      {name: 'leftBiceps', label: 'Left Biceps'},
+      {name: 'rightBiceps', label: 'Right Biceps'},
+      {name: 'leftForearm', label: 'Left Forearm'},
+      {name: 'rightForearm', label: 'Right Forearm'},
+      {name: 'leftThigh', label: 'Left Thigh'},
+      {name: 'rightThigh', label: 'Right Thigh'},
+      {name: 'leftCalf', label: 'Left Calf'},
+      {name: 'rightCalf', label: 'Right Calf'},
+      {name: 'shoulders', label: 'Shoulders'},
+      {name: 'chest', label: 'Chest'},
+      {name: 'waist', label: 'Waist'},
+      {name: 'abdomen', label: 'Abdomen'},
+      {name: 'hips', label: 'Hips'}
     ];
   }
 
@@ -75,11 +75,11 @@ export class ReportDialog {
     };
     this.menteeService.reviewPeriodicalReport(this.data.report.id, auditDto).subscribe({
       next: () => {
-        this.snackBar.open('Report reviewed successfully!', 'Close', { duration: 3000 });
+        this.snackBar.open('Report reviewed successfully!', 'Close', {duration: 3000});
         this.dialogRef.close(true);
       },
       error: (err) => {
-        this.snackBar.open('Error reviewing report: ' + err.message, 'Close', { duration: 3000 });
+        this.snackBar.open('Error reviewing report: ' + err.message, 'Close', {duration: 3000});
       }
     });
   }

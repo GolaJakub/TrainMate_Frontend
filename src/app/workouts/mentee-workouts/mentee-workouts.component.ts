@@ -1,13 +1,18 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
-import { WorkoutsService } from '../workouts.service';
-import { Router } from '@angular/router';
-import { SetParams, ReportCreateDto, ExerciseItemProjection, ExerciseReport } from '../workouts.model';
-import { FormsModule } from '@angular/forms';
+import {WorkoutsService} from '../workouts.service';
+import {Router} from '@angular/router';
+import {ExerciseItemProjection, ExerciseReport, SetParams} from '../workouts.model';
+import {FormsModule} from '@angular/forms';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {
-  MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle
 } from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
 import {SafePipe} from "../../common/safe.pipe";
@@ -34,7 +39,8 @@ export class MenteeWorkoutsComponent implements OnInit {
   reportNotes: string = '';
   expandedSets: { [key: number]: boolean } = {};
 
-  constructor(private workoutsService: WorkoutsService, private router: Router, private snackBar: MatSnackBar, private dialog: MatDialog) {}
+  constructor(private workoutsService: WorkoutsService, private router: Router, private snackBar: MatSnackBar, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.initializeTasks();
@@ -185,7 +191,8 @@ export class MenteeWorkoutsComponent implements OnInit {
   standalone: true
 })
 export class ExerciseDetailDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ExerciseItemProjection) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ExerciseItemProjection) {
+  }
 
   isExerciseUrlValid(url: string): boolean {
     // Implement validation logic here

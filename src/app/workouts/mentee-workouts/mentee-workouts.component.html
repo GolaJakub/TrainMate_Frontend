@@ -6,24 +6,37 @@
     <div class="card-body">
       <div class="container">
         <div class="row">
-          <div class="col" *ngFor="let day of days">
+          <div *ngFor="let day of days" class="col">
             <div class="day-header p-3 mb-4 rounded text-center">
               <h3>{{ day }}</h3>
             </div>
-            <div class="task p-3 mb-3 rounded" *ngFor="let task of tasks[day]" style="cursor: pointer;" (click)="onTaskClick(task)">
+            <div (click)="onTaskClick(task)" *ngFor="let task of tasks[day]" class="task p-3 mb-3 rounded"
+                 style="cursor: pointer;">
               <div class="task-header">
                 <h4>{{ task.name }}</h4>
               </div>
               <div class="task-body">
-                <div><fa-icon [icon]="['fas', 'clock']"></fa-icon> Tempo: {{ task.tempo }}</div>
-                <div><fa-icon [icon]="['fas', 'sync']"></fa-icon> Reps/Sets: {{ task.repetitions }}/{{ task.sets }}</div>
-                <div><fa-icon [icon]="['fas', 'dumbbell']"></fa-icon> Weight: {{ task.weight }}kg</div>
-                <div><fa-icon [icon]="['fas', 'heartbeat']"></fa-icon> RIR: {{ task.rir }}</div>
+                <div>
+                  <fa-icon [icon]="['fas', 'clock']"></fa-icon>
+                  Tempo: {{ task.tempo }}
+                </div>
+                <div>
+                  <fa-icon [icon]="['fas', 'sync']"></fa-icon>
+                  Reps/Sets: {{ task.repetitions }}/{{ task.sets }}
+                </div>
+                <div>
+                  <fa-icon [icon]="['fas', 'dumbbell']"></fa-icon>
+                  Weight: {{ task.weight }}kg
+                </div>
+                <div>
+                  <fa-icon [icon]="['fas', 'heartbeat']"></fa-icon>
+                  RIR: {{ task.rir }}
+                </div>
               </div>
               <div class="text-center">
-                <button class="btn mt-2"
+                <button (click)="openReportModal(task); $event.stopPropagation()"
                         [ngClass]="{'btn-success': task.reported, 'btn-danger': !task.reported}"
-                        (click)="openReportModal(task); $event.stopPropagation()">
+                        class="btn mt-2">
                   Report
                 </button>
               </div>

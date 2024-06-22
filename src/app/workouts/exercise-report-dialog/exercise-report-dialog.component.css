@@ -28,6 +28,7 @@
   bottom: 0;
   background-color: #fff; /* Dopasowany kolor tła */
   z-index: 1;
+
   .button {
     color: #fff;
     background-color: #333;

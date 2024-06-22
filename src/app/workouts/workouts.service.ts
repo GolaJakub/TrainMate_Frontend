@@ -1,21 +1,26 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { map, Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {map, Observable} from 'rxjs';
 import {
-  TrainingUnitProjection,
-  ReportCreateDto,
   ExerciseItemProjection,
+  ExerciseItemUpdateDto,
   ExerciseReport,
-  WorkoutPlanCreateDto, WorkoutPlanProjection, TrainingUnitUpdateDto, TrainingUnitDto, ExerciseItemUpdateDto
+  ReportCreateDto,
+  TrainingUnitDto,
+  TrainingUnitProjection,
+  TrainingUnitUpdateDto,
+  WorkoutPlanCreateDto,
+  WorkoutPlanProjection
 } from './workouts.model';
-import { WorkoutPlanUpdateDto } from "../mentees/mentees-list/mentee.model";
+import {WorkoutPlanUpdateDto} from "../mentees/mentees-list/mentee.model";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class WorkoutsService {
   baseUrl = 'http://localhost:8080/api/tm-core';
 
-  constructor(private httpClient: HttpClient, private oAuthService: OAuthService) {}
+  constructor(private httpClient: HttpClient, private oAuthService: OAuthService) {
+  }
 
   getCurrentTrainingUnits(): Observable<{ [key: string]: ExerciseItemProjection[] }> {
     return this.httpClient.get<TrainingUnitProjection[]>(`${this.baseUrl}/training/current`, {
@@ -25,38 +30,6 @@ export class WorkoutsService {
     }).pipe(
       map(data => this.processTrainingUnits(data))
     );
-  }
-
-  private processTrainingUnits(data: TrainingUnitProjection[]): { [key: string]: ExerciseItemProjection[] } {
-    return data.reduce((tasks, unit) => {
-      const day = this.mapDayOfWeek(unit.dayOfWeek);
-      if (!tasks[day]) {
-        tasks[day] = [];
-      }
-      tasks[day].push(...unit.exercises);
-      return tasks;
-    }, {} as { [key: string]: ExerciseItemProjection[] });
-  }
-
-  private mapDayOfWeek(dayOfWeek: string): string {
-    switch (dayOfWeek.toUpperCase()) {
-      case 'MONDAY':
-        return 'Monday';
-      case 'TUESDAY':
-        return 'Tuesday';
-      case 'WEDNESDAY':
-        return 'Wednesday';
-      case 'THURSDAY':
-        return 'Thursday';
-      case 'FRIDAY':
-        return 'Friday';
-      case 'SATURDAY':
-        return 'Saturday';
-      case 'SUNDAY':
-        return 'Sunday';
-      default:
-        return '';
-    }
   }
 
   reportExercise(reportCreateDto: ReportCreateDto): Observable<any> {
@@ -89,7 +62,9 @@ export class WorkoutsService {
   }
 
   getTrainingUnits(workoutPlanId: number, week: number): Observable<any> {
-    return this.httpClient.get<{ [key: string]: ExerciseItemProjection[] }>(`${this.baseUrl}/training/${workoutPlanId}/get-for-week?week=${week}`,
+    return this.httpClient.get<{
+      [key: string]: ExerciseItemProjection[]
+    }>(`${this.baseUrl}/training/${workoutPlanId}/get-for-week?week=${week}`,
       {
         headers: {
           'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
@@ -145,5 +120,37 @@ export class WorkoutsService {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`
       },
     });
+  }
+
+  private processTrainingUnits(data: TrainingUnitProjection[]): { [key: string]: ExerciseItemProjection[] } {
+    return data.reduce((tasks, unit) => {
+      const day = this.mapDayOfWeek(unit.dayOfWeek);
+      if (!tasks[day]) {
+        tasks[day] = [];
+      }
+      tasks[day].push(...unit.exercises);
+      return tasks;
+    }, {} as { [key: string]: ExerciseItemProjection[] });
+  }
+
+  private mapDayOfWeek(dayOfWeek: string): string {
+    switch (dayOfWeek.toUpperCase()) {
+      case 'MONDAY':
+        return 'Monday';
+      case 'TUESDAY':
+        return 'Tuesday';
+      case 'WEDNESDAY':
+        return 'Wednesday';
+      case 'THURSDAY':
+        return 'Thursday';
+      case 'FRIDAY':
+        return 'Friday';
+      case 'SATURDAY':
+        return 'Saturday';
+      case 'SUNDAY':
+        return 'Sunday';
+      default:
+        return '';
+    }
   }
 }

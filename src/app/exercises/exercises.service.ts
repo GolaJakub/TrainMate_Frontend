@@ -25,7 +25,7 @@ export class ExerciseService {
       .set('page', criteria.page ? criteria.page.toString() : '0')
       .set('size', criteria.pageSize ? criteria.pageSize.toString() : '5')
       .set('sort', criteria.sort ? criteria.sort : 'name,asc');
-    return this.httpClient.post<Page<ExerciseListItemProjection>>(`${this.baserUrl}/search`, criteria,{
+    return this.httpClient.post<Page<ExerciseListItemProjection>>(`${this.baserUrl}/search`, criteria, {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
         'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ export class ExerciseService {
   }
 
   getExerciseById(exerciseId: string | null): Observable<ExerciseProjection> {
-    return this.httpClient.get<ExerciseProjection>(`${this.baserUrl}/${exerciseId}`,{
+    return this.httpClient.get<ExerciseProjection>(`${this.baserUrl}/${exerciseId}`, {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
         'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ export class ExerciseService {
   }
 
   updateExercise(exerciseId: number, updatedExercise: ExerciseEditData) {
-    return this.httpClient.put<ExerciseProjection>(`${this.baserUrl}/${exerciseId}`, updatedExercise,{
+    return this.httpClient.put<ExerciseProjection>(`${this.baserUrl}/${exerciseId}`, updatedExercise, {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
         'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ export class ExerciseService {
   }
 
   addExercise(exerciseFormData: ExerciseCreateData) {
-    return this.httpClient.post<ExerciseProjection>(`${this.baserUrl}/create`, exerciseFormData,{
+    return this.httpClient.post<ExerciseProjection>(`${this.baserUrl}/create`, exerciseFormData, {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
         'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ export class ExerciseService {
   }
 
   deleteExercise(exerciseId: number, auditDto: { id: number, version: number }) {
-    return this.httpClient.delete<void>(`${this.baserUrl}/${exerciseId}`,{
+    return this.httpClient.delete<void>(`${this.baserUrl}/${exerciseId}`, {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
         'Content-Type': 'application/json'

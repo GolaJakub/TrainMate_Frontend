@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ExerciseService } from "./exercises.service";
-import { ExerciseListItemProjection } from "./exercise.data";
-import { CommonModule, NgForOf } from "@angular/common";
-import { Muscle, MuscleGroup, muscleGroupsValues, muscleToMuscleGroupMap } from "./muscles/muscles.data";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {ExerciseService} from "./exercises.service";
+import {ExerciseListItemProjection} from "./exercise.data";
+import {CommonModule, NgForOf} from "@angular/common";
+import {Muscle, MuscleGroup, muscleGroupsValues, muscleToMuscleGroupMap} from "./muscles/muscles.data";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'tm-exercises',
@@ -38,8 +38,10 @@ export class ExercisesComponent implements OnInit {
 
   filteredMuscleGroups: MuscleGroup[] = [];
   filteredMuscles: Muscle[] = [];
+  protected readonly muscleGroupsValues = muscleGroupsValues;
 
-  constructor(private exerciseService: ExerciseService) { }
+  constructor(private exerciseService: ExerciseService) {
+  }
 
   ngOnInit(): void {
     this.loadExercises();
@@ -117,6 +119,4 @@ export class ExercisesComponent implements OnInit {
     this.searchCriteria.page = this.currentPage;
     this.loadExercises();
   }
-
-  protected readonly muscleGroupsValues = muscleGroupsValues;
 }

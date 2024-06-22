@@ -1,15 +1,15 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { OAuthService } from "angular-oauth2-oidc";
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {OAuthService} from "angular-oauth2-oidc";
 import {
+  FileStorageDto,
   PeriodicalReportCreateDto,
   PeriodicalReportProjection,
-  FileStorageDto,
   PeriodicalReportUpdateDto
 } from "./reports.model";
-import { Observable } from "rxjs";
+import {Observable} from "rxjs";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class PeriodicalReportService {
   baseUrl = 'http://localhost:8080/api/tm-core';
 

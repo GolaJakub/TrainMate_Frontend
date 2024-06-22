@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ReportDialog } from '../../reports/periodical-report/report-dialog.component';
-import {MenteeProjection, WorkoutPlan, WorkoutPlanUpdateDto} from '../mentees-list/mentee.model';
-import { MenteeService } from '../mentee.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {faCheckCircle, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ReportDialog} from '../../reports/periodical-report/report-dialog.component';
+import {MenteeProjection, WorkoutPlan} from '../mentees-list/mentee.model';
+import {MenteeService} from '../mentee.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {WorkoutsService} from "../../workouts/workouts.service";
 
 @Component({
@@ -42,14 +42,15 @@ export class MenteeDetailsComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router,
     private workoutsService: WorkoutsService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     const userId = this.route.snapshot.paramMap.get('id');
     if (userId) {
       this.menteeService.getMentee(userId).subscribe(
         mentee => this.mentee = mentee,
-        error => console.error('Error fetching mentee details', error)
+        error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
       );
       this.loadWorkoutPlans(userId);
     }
@@ -60,7 +61,7 @@ export class MenteeDetailsComponent implements OnInit {
       plans => {
         this.workoutPlans = plans;
       },
-      error => console.error('Error fetching workout plans', error)
+      error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
     );
   }
 
@@ -71,14 +72,14 @@ export class MenteeDetailsComponent implements OnInit {
           this.menteeService.getReportFiles(report.id).subscribe(
             files => {
               this.dialog.open(ReportDialog, {
-                data: { report, files },
+                data: {report, files},
                 width: '800px'
               });
             },
-            error => console.error('Error fetching report files', error)
+            error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
           );
         },
-        error => console.error('Error fetching initial report', error)
+        error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
       );
     }
   }
@@ -89,7 +90,7 @@ export class MenteeDetailsComponent implements OnInit {
         this.menteeService.getPeriodicalReport(reportId).subscribe(
           report => {
             const dialogRef = this.dialog.open(ReportDialog, {
-              data: { report, files },
+              data: {report, files},
               width: '800px'
             });
 
@@ -99,7 +100,7 @@ export class MenteeDetailsComponent implements OnInit {
               }
             })
           },
-          error => console.error('Error fetching report', error)
+          error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
         );
       },
       error => console.error('Error fetching report files', error)
@@ -107,14 +108,14 @@ export class MenteeDetailsComponent implements OnInit {
   }
 
   deleteWorkoutPlan(workoutPlan: WorkoutPlan): void {
-    const dto = { id: workoutPlan.id, version: workoutPlan.version };  // Prepare the BasicAuditDto
+    const dto = {id: workoutPlan.id, version: workoutPlan.version};  // Prepare the BasicAuditDto
     this.menteeService.deleteWorkoutPlan(workoutPlan.id, dto).subscribe({
       next: () => {
-        this.snackBar.open('Workout plan deleted successfully!', 'Close', { duration: 3000 });
+        this.snackBar.open('Workout plan deleted successfully!', 'Close', {duration: 3000});
         this.loadWorkoutPlans(this.mentee!.userId.keycloakId);
       },
       error: (err) => {
-        this.snackBar.open('Error deleting workout plan: ' + err.error[0].description, 'Close', { duration: 3000 });
+        this.snackBar.open('Error deleting workout plan: ' + err.error[0].description, 'Close', {duration: 3000});
       }
     });
   }
@@ -123,11 +124,11 @@ export class MenteeDetailsComponent implements OnInit {
     if (this.mentee) {
       this.menteeService.activateAccount(this.mentee.userId.keycloakId).subscribe({
         next: () => {
-          this.snackBar.open('Account activated successfully!', 'OK', { duration: 3000 });
+          this.snackBar.open('Account activated successfully!', 'OK', {duration: 3000});
           this.mentee!.active = true;
         },
         error: () => {
-          this.snackBar.open('Error activating account', 'Close', { duration: 3000 });
+          this.snackBar.open('Error activating account', 'Close', {duration: 3000});
         }
       });
     }
@@ -137,11 +138,11 @@ export class MenteeDetailsComponent implements OnInit {
     if (this.mentee) {
       this.menteeService.deactivateAccount(this.mentee.userId.keycloakId).subscribe({
         next: () => {
-          this.snackBar.open('Account deactivated successfully!', 'OK', { duration: 3000 });
+          this.snackBar.open('Account deactivated successfully!', 'OK', {duration: 3000});
           this.mentee!.active = false;
         },
         error: () => {
-          this.snackBar.open('Error deactivating account', 'Close', { duration: 3000 });
+          this.snackBar.open('Error deactivating account', 'Close', {duration: 3000});
         }
       });
     }

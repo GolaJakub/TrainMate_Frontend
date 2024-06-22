@@ -52,28 +52,9 @@ export class MenteeOwnWorkoutPlansListComponent implements OnInit {
         this.workoutPlans = plans;
         this.totalPages = Math.ceil(plans.length / this.pageSize);
       },
-      error => console.error('Error fetching workout plans', error)
+      error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
     );
   }
-
-  // openInitialReportModal(): void {
-  //   if (this.mentee) {
-  //     this.menteeService.getInitialReport(this.mentee.userId.keycloakId).subscribe(
-  //       report => {
-  //         this.menteeService.getReportFiles(report.id).subscribe(
-  //           files => {
-  //             this.dialog.open(ReportDialog, {
-  //               data: {report, files},
-  //               width: '800px'
-  //             });
-  //           },
-  //           error => console.error('Error fetching report files', error)
-  //         );
-  //       },
-  //       error => console.error('Error fetching initial report', error)
-  //     );
-  //   }
-  // }
 
   openReportModal(reportId: number): void {
     this.menteeService.getReportFiles(reportId).subscribe(
@@ -91,7 +72,7 @@ export class MenteeOwnWorkoutPlansListComponent implements OnInit {
               }
             })
           },
-          error => console.error('Error fetching report', error)
+          error => this.snackBar.open(error.error[0].description, 'Close', {duration: 3000})
         );
       },
       error => console.error('Error fetching report files', error)

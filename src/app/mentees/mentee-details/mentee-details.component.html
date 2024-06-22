@@ -1,7 +1,8 @@
 <div class="container mt-4">
   <!-- Mentee Details -->
   <div class="card shadow mb-4">
-    <div class="card-header bg-dark text-white d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
+    <div
+      class="card-header bg-dark text-white d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
       <h5 class="display-6 text-nowrap text-capitalize text-white mb-0">Mentee Details</h5>
     </div>
     <div class="card-body">
@@ -22,10 +23,16 @@
               {{ mentee?.active ? 'Active' : 'Inactive' }}
             </span>
           </p>
-          <button class="btn btn-primary" *ngIf="!mentee?.firstLogin" (click)="openInitialReportModal()">Initial Report</button>
-          <button class="btn btn-success me-2" *ngIf="!mentee?.active" (click)="activateAccount()">Activate Account</button>
-          <button class="btn btn-danger me-2" *ngIf="mentee?.active" (click)="deactivateAccount()">Deactivate Account</button>
-          <button class="btn btn-warning me-2" [routerLink]="['/mentee-progress', mentee?.userId?.keycloakId]">Progress</button>
+          <button (click)="openInitialReportModal()" *ngIf="!mentee?.firstLogin" class="btn btn-primary">Initial
+            Report
+          </button>
+          <button (click)="activateAccount()" *ngIf="!mentee?.active" class="btn btn-success me-2">Activate Account
+          </button>
+          <button (click)="deactivateAccount()" *ngIf="mentee?.active" class="btn btn-danger me-2">Deactivate Account
+          </button>
+          <button [routerLink]="['/mentee-progress', mentee?.userId?.keycloakId]" class="btn btn-warning me-2">
+            Progress
+          </button>
         </div>
       </div>
     </div>
@@ -33,17 +40,19 @@
 
   <!-- Workout Plans -->
   <div class="card shadow">
-    <div class="card-header bg-dark text-white d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
+    <div
+      class="card-header bg-dark text-white d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
       <h5 class="display-6 text-nowrap text-capitalize text-white mb-0">Workout Plans</h5>
-      <button class="btn btn-warning btn-sm" [routerLink]="['/workout-plan/create', mentee!.userId.keycloakId ]" style="margin-left: 4px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-plus"
-             viewBox="0 0 16 16">
+      <button [routerLink]="['/workout-plan/create', mentee!.userId.keycloakId ]" class="btn btn-warning btn-sm"
+              style="margin-left: 4px;">
+        <svg class="bi bi-plus" fill="currentColor" height="1em" viewBox="0 0 16 16" width="1em"
+             xmlns="http://www.w3.org/2000/svg">
           <path d="M8 7v6h1V7h6V6H9V0H8v6H2v1h6z"/>
         </svg>
       </button>
     </div>
     <div class="card-body">
-      <div class="table-responsive">
+      <div *ngIf="workoutPlans.length > 0" class="table-responsive">
         <table class="table table-striped table-hover">
           <thead>
           <tr>
@@ -61,20 +70,31 @@
             <td class="text-truncate" style="max-width: 100px;">{{ plan.dateRange.from }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ plan.dateRange.to }}</td>
             <td class="text-truncate text-center" style="max-width: 50px;">
-              <fa-icon [icon]="plan.report.id !== null ? faCheckCircle : faTimesCircle" [ngClass]="{'text-success': plan.report.id !== null, 'text-danger': plan.report.id === null}"></fa-icon>
+              <fa-icon [icon]="plan.report.id !== null ? faCheckCircle : faTimesCircle"
+                       [ngClass]="{'text-success': plan.report.id !== null, 'text-danger': plan.report.id === null}"></fa-icon>
             </td>
             <td class="text-truncate text-center" style="max-width: 50px;">
-              <fa-icon [icon]="plan.report.reviewed === true ? faCheckCircle : faTimesCircle" [ngClass]="{'text-success': plan.report.reviewed === true, 'text-danger': plan.report.reviewed !== true}"></fa-icon>
+              <fa-icon [icon]="plan.report.reviewed === true ? faCheckCircle : faTimesCircle"
+                       [ngClass]="{'text-success': plan.report.reviewed === true, 'text-danger': plan.report.reviewed !== true}"></fa-icon>
             </td>
             <td class="text-center">
-              <button (click)="openReportModal(plan.report.id)" *ngIf="plan.report.id !== null" class="btn btn-sm btn-primary">Show Report</button>
+              <button (click)="openReportModal(plan.report.id)" *ngIf="plan.report.id !== null"
+                      class="btn btn-sm btn-primary">Show Report
+              </button>
               <a [routerLink]="['/workout-plan-details', plan.id]" class="btn btn-sm btn-warning">Plan Details</a>
-              <button (click)="deleteWorkoutPlan(plan)" class="btn btn-sm btn-danger"><fa-icon [icon]="['fas', 'trash']"></fa-icon></button>
-              <a [routerLink]="['/workout-plan/edit', plan.id]" class="btn btn-sm btn-primary"><fa-icon [icon]="['fas', 'edit']"></fa-icon></a>
+              <button (click)="deleteWorkoutPlan(plan)" class="btn btn-sm btn-danger">
+                <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+              </button>
+              <a [routerLink]="['/workout-plan/edit', plan.id]" class="btn btn-sm btn-primary">
+                <fa-icon [icon]="['fas', 'edit']"></fa-icon>
+              </a>
             </td>
           </tr>
           </tbody>
         </table>
+      </div>
+      <div *ngIf="workoutPlans.length === 0">
+        <h2>There is no workout plans</h2>
       </div>
     </div>
     <div class="card-footer">

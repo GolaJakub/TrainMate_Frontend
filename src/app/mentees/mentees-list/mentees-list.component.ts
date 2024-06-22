@@ -26,8 +26,11 @@ export class MenteesListComponent implements OnInit {
   currentPage = 0;
   totalPages = 0;
   pageSize = 5;
+  protected readonly faCheckCircle = faCheckCircle;
+  protected readonly faTimesCircle = faTimesCircle;
 
-  constructor(private menteeService: MenteeService) { }
+  constructor(private menteeService: MenteeService) {
+  }
 
   ngOnInit(): void {
     this.onSearchButtonClick();
@@ -55,7 +58,4 @@ export class MenteesListComponent implements OnInit {
   range(totalPages: number): number[] {
     return [...Array(totalPages).keys()];
   }
-
-  protected readonly faCheckCircle = faCheckCircle;
-  protected readonly faTimesCircle = faTimesCircle;
 }

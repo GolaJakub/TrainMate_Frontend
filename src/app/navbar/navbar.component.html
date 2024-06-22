@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand-md bg-dark py-3 sticky-top" data-bs-theme="dark">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center" [routerLink]="'/'">
+    <a [routerLink]="'/'" class="navbar-brand d-flex align-items-center">
       <span
         class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
-          <img ngSrc="assets/dietetyk1.svg" alt="Logo" width="70" height="70" class="d-inline-block align-top" priority>
+          <img alt="Logo" class="d-inline-block align-top" height="70" ngSrc="assets/dietetyk1.svg" priority width="70">
       </span>
       <span>TrainMate</span>
     </a>
-    <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5">
+    <button class="navbar-toggler" data-bs-target="#navcol-5" data-bs-toggle="collapse">
       <span class="visually-hidden">Toggle navigation</span>
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,28 +16,32 @@
       <ul class="navbar-nav ms-auto">
         <ng-container *ngIf="currentUser?.role !== 'MENTEE'">
           <li class="nav-item">
-            <a routerLink="/exercises" routerLinkActive="active" class="nav-link">Exercises</a>
+            <a class="nav-link" routerLink="/exercises" routerLinkActive="active">Exercises</a>
           </li>
           <li class="nav-item">
-            <a routerLink="/mentees" routerLinkActive="active" class="nav-link">Mentees</a>
+            <a class="nav-link" routerLink="/mentees" routerLinkActive="active">Mentees</a>
           </li>
         </ng-container>
         <ng-container *ngIf="currentUser?.role == 'MENTEE' && !currentUser?.firstLogin">
           <li class="nav-item">
-            <a routerLink="/my-workouts" routerLinkActive="active" class="nav-link">My workouts</a>
+            <a class="nav-link" routerLink="/my-workouts" routerLinkActive="active">My workouts</a>
           </li>
           <li class="nav-item">
-            <a routerLink="/my-progress" routerLinkActive="active" class="nav-link">My progress</a>
+            <a class="nav-link" routerLink="/my-progress" routerLinkActive="active">My progress</a>
           </li>
         </ng-container>
         <li>
-          <a routerLink="/personal-data" *ngIf="currentUser?.personalInfo?.firstname && currentUser?.personalInfo?.lastname" class="btn btn-warning ms-md-2"
-             role="button">{{ currentUser?.personalInfo?.firstname }} {{ currentUser?.personalInfo?.lastname }}</a>
-          <a *ngIf="!(currentUser?.personalInfo?.firstname && currentUser?.personalInfo?.lastname) && currentUser?.personalInfo?.email" class="btn btn-warning ms-md-2"
-             role="button">{{ currentUser?.personalInfo?.email }}</a>
+          <a *ngIf="currentUser?.personalInfo?.firstname && currentUser?.personalInfo?.lastname"
+             class="btn btn-warning ms-md-2"
+             role="button"
+             routerLink="/personal-data">{{ currentUser?.personalInfo?.firstname }} {{ currentUser?.personalInfo?.lastname }}</a>
+          <a
+            *ngIf="!(currentUser?.personalInfo?.firstname && currentUser?.personalInfo?.lastname) && currentUser?.personalInfo?.email"
+            class="btn btn-warning ms-md-2"
+            role="button">{{ currentUser?.personalInfo?.email }}</a>
         </li>
         <li>
-          <a routerLink="/logout" (click)="logout()" class="btn btn-warning ms-md-2" role="button">Logout</a>
+          <a (click)="logout()" class="btn btn-warning ms-md-2" role="button" routerLink="/logout">Logout</a>
         </li>
       </ul>
 

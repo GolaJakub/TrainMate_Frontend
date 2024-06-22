@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {UserData} from "../users/user-data.model";
-import {UsersService} from "../users/users.service";
 import {NgIf} from "@angular/common";
 import {PeriodicalReportComponent} from "../reports/periodical-report/periodical-report.component";
 import {UserStateService} from "../users/user-state.service";
 import {PersonalDataComponent} from "../users/personal-data/personal-data.component";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -22,7 +22,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class HomeComponent implements OnInit {
   currentUser: UserData | null = null;
 
-  constructor(private userStateService: UserStateService, private router: Router) {}
+  constructor(private userStateService: UserStateService, private router: Router, private snackBar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
     this.currentUser = this.userStateService.getCurrentUser();
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit {
         this.redirectBasedOnRole();
       },
       error => {
-        console.error('Error fetching user data', error);
+        this.snackBar.open(error.error[0].description, 'Close', {duration: 3000});
       }
     );
   }

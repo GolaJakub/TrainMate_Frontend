@@ -25,7 +25,7 @@ export class PersonalDataComponent implements OnInit {
   menteeDetailsForm: FormGroup;
 
   fields = [
-    {name: 'email', label: 'Email' },
+    {name: 'email', label: 'Email'},
     {name: 'firstname', label: 'First Name'},
     {name: 'lastname', label: 'Last Name'},
     {name: 'phone', label: 'Phone Number'},
@@ -77,18 +77,18 @@ export class PersonalDataComponent implements OnInit {
 
   save(): void {
     if (this.menteeDetailsForm.valid) {
-      const updatedMentee = { ...this.menteeDetailsForm.value };
+      const updatedMentee = {...this.menteeDetailsForm.value};
 
       this.userService.saveMentee(updatedMentee).subscribe({
         next: () => {
-          this.snackBar.open('Personal data saved successfully!', 'OK', { duration: 3000 });
+          this.snackBar.open('Personal data saved successfully!', 'OK', {duration: 3000});
           if (this.isMenteeFirstLogin()) {
             this.router.navigate(['/periodical-report']);
           }
           this.userStateService.loadCurrentUser();
         },
         error: (message) => {
-          this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+          this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
         }
       });
     } else {

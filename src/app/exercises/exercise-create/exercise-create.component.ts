@@ -27,7 +27,8 @@ export class ExerciseCreateComponent implements OnInit {
     private exerciseService: ExerciseService,
     private router: Router,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.exerciseForm = this.fb.group({
@@ -43,11 +44,11 @@ export class ExerciseCreateComponent implements OnInit {
       const newExercise = this.exerciseForm.value;
       this.exerciseService.addExercise(newExercise).subscribe({
         next: () => {
-          this.snackBar.open('Exercise added successfully!', 'Close', { duration: 3000 });
+          this.snackBar.open('Exercise added successfully!', 'Close', {duration: 3000});
           this.router.navigate(['/exercises']);
         },
         error: (message) => {
-          this.snackBar.open(message.error[0].description, 'Close', { duration: 3000 });
+          this.snackBar.open(message.error[0].description, 'Close', {duration: 3000});
         }
       });
     } else {

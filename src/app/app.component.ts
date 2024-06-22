@@ -1,19 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
-import {filter} from "rxjs";
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {NavbarComponent} from "./navbar/navbar.component";
-import {UserStateService} from "./users/user-state.service";
 import {FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import {
   faClock,
-  faHeartbeat,
   faDumbbell,
+  faEdit,
+  faHeartbeat,
   faRedo,
   faStopwatch,
   faSync,
-  faTrash,
-  faEdit
+  faTrash
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
