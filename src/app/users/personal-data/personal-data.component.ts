@@ -47,6 +47,7 @@ export class PersonalDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userStateService.loadCurrentUser();
     const currentUser = this.userStateService.getCurrentUser();
     if (currentUser) {
       this.menteeDetailsForm.patchValue({

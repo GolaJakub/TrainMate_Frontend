@@ -57,7 +57,7 @@ export class ExerciseDetailsComponent implements OnInit {
       name: [this.exercise.name, Validators.required],
       muscleInvolved: [this.exercise.muscleInvolved],
       description: [this.exercise.description, Validators.required],
-      url: [this.exercise.url, Validators.required]
+      url: [this.exercise.url]
     });
   }
 

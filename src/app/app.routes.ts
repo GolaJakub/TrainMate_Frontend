@@ -16,6 +16,7 @@ import { WorkoutPlanCreateComponent } from "./workouts/workout-plan-create/worko
 import { MenteeWorkoutPlanComponent } from "./mentees/mentee-details/mentee-workout-plan/mentee-workout-plan.component";
 import { MenteeOwnWorkoutPlansListComponent } from "./workouts/mentee-workout-plans/mentee-own-workout-plans-list.component";
 import { MenteeOwnWorkoutPlanComponent } from "./workouts/mentee-own-workout-plan/mentee-own-workout-plan.component";
+import {MenteeProgressComponent} from "./mentees/mentee-progress/mentee-progress.component";
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,4 +38,6 @@ export const routes: Routes = [
   { path: 'workout-plan/edit/:workoutPlanId', component: WorkoutPlanCreateComponent, canActivate: [RoleGuard], data: { expectedRole: 'PERSONAL_TRAINER' } },
   { path: 'workout-plan-details/:workoutPlanId', component: MenteeWorkoutPlanComponent, canActivate: [RoleGuard], data: { expectedRole: 'PERSONAL_TRAINER' } },
   { path: 'mentee-workout-plan-details/:workoutPlanId', component: MenteeOwnWorkoutPlanComponent },
+  { path: 'my-progress', component: MenteeProgressComponent },
+  { path: 'mentee-progress/:menteeId', component: MenteeProgressComponent },
 ];

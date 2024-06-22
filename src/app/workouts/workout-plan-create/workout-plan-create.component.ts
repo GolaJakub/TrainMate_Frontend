@@ -75,11 +75,8 @@ export class WorkoutPlanCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    debugger;
-
     if (this.workoutPlanForm.valid) {
       if (this.isEditMode) {
-        debugger;
         const updateDto = {
           id: this.workoutPlanId,
           version: this.version,

@@ -34,7 +34,7 @@ export class ExerciseCreateComponent implements OnInit {
       name: ['', Validators.required],
       muscleInvolved: ['', Validators.required],
       description: ['', Validators.required],
-      url: ['', Validators.required]
+      url: ['']
     });
   }
 

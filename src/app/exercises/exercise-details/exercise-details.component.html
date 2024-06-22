@@ -35,9 +35,6 @@
           <div class="col-md-3"><strong>Video tutorial:</strong></div>
           <div class="col-md-9">
             <input formControlName="url" class="form-control" [class.is-invalid]="exerciseForm.get('url')?.invalid && exerciseForm.get('url')?.touched"/>
-            <div *ngIf="exerciseForm.get('url')?.invalid && exerciseForm.get('url')?.touched" class="invalid-feedback">
-              URL is required.
-            </div>
           </div>
         </div>
       </form>

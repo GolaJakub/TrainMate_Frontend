@@ -35,7 +35,6 @@ export class PeriodicalReportService {
   }
 
   updatePeriodicalReport(reportId: number, periodicalReportData: PeriodicalReportUpdateDto) {
-    debugger;
     return this.httpClient.put<void>(`${this.baseUrl}/workout-plan/report/${reportId}`, periodicalReportData, {
       headers: {
         'Authorization': `Bearer ${this.oAuthService.getAccessToken()}`,
