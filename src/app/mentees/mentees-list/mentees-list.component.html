@@ -1,32 +1,25 @@
 <div class="container mt-4">
   <div class="">
     <div class="card shadow">
-      <div
-        class="card-header bg-dark d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
+      <div class="card-header bg-dark d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
         <h5 class="display-6 text-nowrap text-capitalize text-white mb-0">Mentees</h5>
 
         <div class="input-group input-group-sm w-auto">
-          <input class="form-control form-control-sm" type="text" placeholder="First Name" [(ngModel)]="searchCriteria.firstname"
-                 style="width: 180px">
-          <input class="form-control form-control-sm" type="text" placeholder="Last Name" [(ngModel)]="searchCriteria.lastname"
-                 style="width: 180px">
-          <input class="form-control form-control-sm" type="text" placeholder="Email" [(ngModel)]="searchCriteria.email"
-                 style="width: 180px">
+          <input class="form-control form-control-sm" type="text" placeholder="First Name" [(ngModel)]="searchCriteria.firstname" style="width: 180px">
+          <input class="form-control form-control-sm" type="text" placeholder="Last Name" [(ngModel)]="searchCriteria.lastname" style="width: 180px">
+          <input class="form-control form-control-sm" type="text" placeholder="Email" [(ngModel)]="searchCriteria.email" style="width: 180px">
           <select class="form-select form-select-sm" [(ngModel)]="searchCriteria.gender" style="width: 180px">
             <option [ngValue]="null">All Genders</option>
             <option value="MALE">Male</option>
             <option value="FEMALE">Female</option>
           </select>
           <button class="btn btn-warning btn-sm" type="button" (click)="onSearchButtonClick()" style="margin-left: 4px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"
-                 class="bi bi-search mb-1">
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search mb-1">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
             </svg>
           </button>
           <button class="btn btn-warning btn-sm" [routerLink]="['invite-mentee']" style="margin-left: 4px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-plus"
-                 viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
               <path d="M8 7v6h1V7h6V6H9V0H8v6H2v1h6z"/>
             </svg>
           </button>
@@ -41,7 +34,8 @@
               <th class="table-dark">Last Name</th>
               <th class="table-dark">Email</th>
               <th class="table-dark">Gender</th>
-              <th class="table-dark"></th>
+              <th class="table-dark text-center">Active</th>
+              <th class="table-dark text-center"></th>
             </tr>
             </thead>
             <tbody>
@@ -50,14 +44,14 @@
               <td class="text-truncate" style="max-width: 100px;">{{ mentee.lastname }}</td>
               <td class="text-truncate" style="max-width: 150px;">{{ mentee.email }}</td>
               <td class="text-truncate" style="max-width: 50px;">{{ mentee.gender }}</td>
+              <td class="text-truncate text-center" style="max-width: 50px;">
+                <fa-icon [icon]="mentee.active ? faCheckCircle : faTimesCircle" [ngClass]="{'text-success': mentee.active, 'text-danger': !mentee.active}"></fa-icon>
+              </td>
               <td class="text-center">
                 <a [routerLink]="['mentee-details', mentee.userId.keycloakId]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                       viewBox="0 0 16 16"
-                       class="bi bi-eye-fill text-warning fs-5 text-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-eye-fill text-warning fs-5 text-primary">
                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"></path>
-                    <path
-                      d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"></path>
                   </svg>
                 </a>
               </td>
@@ -75,14 +69,13 @@
           </select>
           <ul class="pagination pagination-sm mb-0 justify-content-center">
             <li class="page-item" [class.disabled]="currentPage === 0">
-              <a class="page-link" aria-label="Previous" (click)="onPageChange(currentPage - 1)">«</a>
+              <a class="page-link" aria-label="Previous" (click)="onPageChange(currentPage - 1)" style="cursor: pointer">«</a>
             </li>
-            <li *ngFor="let page of range(totalPages); let i = index" class="page-item"
-                [class.active]="i === currentPage">
-              <a class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</a>
+            <li *ngFor="let page of range(totalPages); let i = index" class="page-item" [class.active]="i === currentPage">
+              <a class="page-link" (click)="onPageChange(i)" style="cursor: pointer">{{ i + 1 }}</a>
             </li>
             <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
-              <a class="page-link" aria-label="Next" (click)="onPageChange(currentPage + 1)">»</a>
+              <a class="page-link" aria-label="Next" (click)="onPageChange(currentPage + 1)" style="cursor: pointer">»</a>
             </li>
           </ul>
         </nav>

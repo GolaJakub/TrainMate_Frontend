@@ -3,7 +3,9 @@ import {MenteeProjection, MenteeSearchCriteria} from "./mentee.model";
 import {MenteeService} from "../mentee.service";
 import {FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
+import {faCheckCircle, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'tm-mentees-list',
@@ -11,7 +13,9 @@ import {NgForOf} from "@angular/common";
   imports: [
     FormsModule,
     RouterLink,
-    NgForOf
+    NgForOf,
+    FontAwesomeModule,
+    NgClass
   ],
   templateUrl: './mentees-list.component.html',
   styleUrl: './mentees-list.component.css'
@@ -51,4 +55,7 @@ export class MenteesListComponent implements OnInit {
   range(totalPages: number): number[] {
     return [...Array(totalPages).keys()];
   }
+
+  protected readonly faCheckCircle = faCheckCircle;
+  protected readonly faTimesCircle = faTimesCircle;
 }

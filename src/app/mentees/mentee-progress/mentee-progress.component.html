@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-dark text-white">
+      <h2>Compare reports</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="leftReportSelect" class="form-label">Select Report</label>
+            <select id="leftReportSelect" class="form-select" (change)="onLeftReportChange($event)">
+              <option *ngFor="let report of getFilteredReports('left')" [value]="report.id">{{ report.createdDate | date }}</option>
+            </select>
+          </div>
+          <ng-container *ngIf="leftSelectedReport">
+            <div *ngFor="let field of fields" class="row mb-3">
+              <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
+              <div class="col-md-9">{{ getFieldValue(leftSelectedReport, field.name) }}</div>
+            </div>
+          </ng-container>
+          <div *ngIf="leftFiles.length > 0" class="mt-4">
+            <h5>Images</h5>
+            <div class="d-flex justify-content-start mb-3">
+              <div *ngFor="let image of leftFiles" class="me-2">
+                <img [src]="'data:image/jpeg;base64,' + image.content" class="img-thumbnail img-max-size" alt="{{ image.name }}" (click)="openImageDialog(image)" style="cursor: pointer;" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="rightReportSelect" class="form-label">Select Report</label>
+            <select id="rightReportSelect" class="form-select" (change)="onRightReportChange($event)">
+              <option *ngFor="let report of getFilteredReports('right')" [value]="report.id">{{ report.createdDate | date }}</option>
+            </select>
+          </div>
+          <ng-container *ngIf="rightSelectedReport">
+            <div *ngFor="let field of fields" class="row mb-3">
+              <div class="col-md-3"><strong>{{ field.label }}:</strong></div>
+              <div class="col-md-9">{{ getFieldValue(rightSelectedReport, field.name) }}</div>
+            </div>
+          </ng-container>
+          <div *ngIf="rightFiles.length > 0" class="mt-4">
+            <h5>Images</h5>
+            <div class="d-flex justify-content-start mb-3">
+              <div *ngFor="let image of rightFiles" class="me-2">
+                <img [src]="'data:image/jpeg;base64,' + image.content" class="img-thumbnail img-max-size" alt="{{ image.name }}" (click)="openImageDialog(image)" style="cursor: pointer;" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-secondary me-2" (click)="onCancel()">Close</button>
+    </div>
+  </div>
+</div>

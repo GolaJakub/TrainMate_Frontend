@@ -25,6 +25,7 @@
           <button class="btn btn-primary" *ngIf="!mentee?.firstLogin" (click)="openInitialReportModal()">Initial Report</button>
           <button class="btn btn-success me-2" *ngIf="!mentee?.active" (click)="activateAccount()">Activate Account</button>
           <button class="btn btn-danger me-2" *ngIf="mentee?.active" (click)="deactivateAccount()">Deactivate Account</button>
+          <button class="btn btn-warning me-2" [routerLink]="['/mentee-progress', mentee?.userId?.keycloakId]">Progress</button>
         </div>
       </div>
     </div>
