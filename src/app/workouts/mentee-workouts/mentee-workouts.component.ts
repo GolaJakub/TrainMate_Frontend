@@ -195,7 +195,6 @@ export class ExerciseDetailDialog {
   }
 
   isExerciseUrlValid(url: string): boolean {
-    // Implement validation logic here
     return true;
   }
 }

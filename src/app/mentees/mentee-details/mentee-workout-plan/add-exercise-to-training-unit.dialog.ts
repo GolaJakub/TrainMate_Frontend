@@ -78,7 +78,7 @@ export class AddExerciseToTrainingUnitDialog implements OnInit {
           workoutPlanId: this.data.workoutPlanId,
           dayOfWeek: this.data.day.toUpperCase(),
           weekNumber: this.data.currentPage,
-          exerciseCreateDto // Directly add exerciseCreateDto
+          exerciseCreateDto
         };
 
         this.workoutsService.createTrainingUnit(trainingUnitDto).subscribe({

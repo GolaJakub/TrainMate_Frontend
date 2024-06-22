@@ -185,10 +185,6 @@ export class MenteeProgressComponent implements OnInit {
     return report[fieldName];
   }
 
-  onCancel(): void {
-    // Implement the cancel logic
-  }
-
   openImageDialog(image: FileStorageDto): void {
     this.dialog.open(ImageDialog, {
       data: image,

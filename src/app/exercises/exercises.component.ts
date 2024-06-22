@@ -45,7 +45,7 @@ export class ExercisesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadExercises();
-    this.filteredMuscleGroups = [null as any as MuscleGroup].concat(muscleGroupsValues); // Add null as "ALL"
+    this.filteredMuscleGroups = [null as any as MuscleGroup].concat(muscleGroupsValues);
   }
 
   onSearchButtonClick(): void {

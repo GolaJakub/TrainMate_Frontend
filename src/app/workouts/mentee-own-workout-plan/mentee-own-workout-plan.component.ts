@@ -25,8 +25,8 @@ import {ExerciseReportDialog} from "../exercise-report-dialog/exercise-report-di
 export class MenteeOwnWorkoutPlanComponent implements OnInit {
   days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   tasks: { [key: string]: ExerciseItemProjection[] } = {};
-  trainingUnitIds: { [key: string]: number } = {}; // Nowy obiekt do przechowywania trainingUnitId dla każdego dnia
-  versions: { [key: string]: number } = {}; // Nowy obiekt do przechowywania version dla każdego dnia
+  trainingUnitIds: { [key: string]: number } = {};
+  versions: { [key: string]: number } = {};
   selectedTask: ExerciseItemProjection | null = null;
   reportSets: SetParams[] = [];
   reportNotes: string = '';
@@ -53,21 +53,21 @@ export class MenteeOwnWorkoutPlanComponent implements OnInit {
   initializeTasks(): void {
     this.days.forEach((day) => {
       this.tasks[day] = [];
-      this.trainingUnitIds[day] = 0; // Inicjalizuj trainingUnitId dla każdego dnia
-      this.versions[day] = 0; // Inicjalizuj version dla każdego dnia
+      this.trainingUnitIds[day] = 0;
+      this.versions[day] = 0;
     });
   }
 
   fetchTrainingUnits(): void {
     if (this.workoutPlanId) {
       this.workoutsService.getTrainingUnits(this.workoutPlanId, this.currentPage).subscribe((data: any[]) => {
-        this.initializeTasks(); // Clear existing tasks
+        this.initializeTasks();
         data.forEach(dayData => {
           const day = this.convertDayOfWeek(dayData.dayOfWeek);
           if (day) {
             this.tasks[day] = dayData.exercises;
-            this.trainingUnitIds[day] = dayData.id; // Przypisz trainingUnitId dla każdego dnia
-            this.versions[day] = dayData.version; // Przypisz version dla każdego dnia
+            this.trainingUnitIds[day] = dayData.id;
+            this.versions[day] = dayData.version;
           }
         });
       });

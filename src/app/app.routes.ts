@@ -1,6 +1,5 @@
 import {Routes} from '@angular/router';
 import {ExercisesComponent} from "./exercises/exercises.component";
-import {WorkoutsComponent} from "./workouts/workouts.component";
 import {ExerciseDetailsComponent} from "./exercises/exercise-details/exercise-details.component";
 import {ExerciseCreateComponent} from "./exercises/exercise-create/exercise-create.component";
 import {AccessDeniedComponent} from "./common/access-denied/access-denied.component";
@@ -28,7 +27,6 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: {expectedRole: 'PERSONAL_TRAINER'}
   },
-  {path: 'workouts', component: WorkoutsComponent},
   {path: 'exercises/exercise-details/:id', component: ExerciseDetailsComponent},
   {path: 'exercises/add-exercise', component: ExerciseCreateComponent},
   {path: 'access-denied', component: AccessDeniedComponent},

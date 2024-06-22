@@ -32,8 +32,8 @@ import {ExerciseReportDialog} from "../../../workouts/exercise-report-dialog/exe
 export class MenteeWorkoutPlanComponent implements OnInit {
   days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   tasks: { [key: string]: ExerciseItemProjection[] } = {};
-  trainingUnitIds: { [key: string]: number } = {}; // Nowy obiekt do przechowywania trainingUnitId dla każdego dnia
-  versions: { [key: string]: number } = {}; // Nowy obiekt do przechowywania version dla każdego dnia
+  trainingUnitIds: { [key: string]: number } = {};
+  versions: { [key: string]: number } = {};
   selectedTask: ExerciseItemProjection | null = null;
   reportSets: SetParams[] = [];
   reportNotes: string = '';
@@ -61,21 +61,21 @@ export class MenteeWorkoutPlanComponent implements OnInit {
   initializeTasks(): void {
     this.days.forEach((day) => {
       this.tasks[day] = [];
-      this.trainingUnitIds[day] = 0; // Inicjalizuj trainingUnitId dla każdego dnia
-      this.versions[day] = 0; // Inicjalizuj version dla każdego dnia
+      this.trainingUnitIds[day] = 0;
+      this.versions[day] = 0;
     });
   }
 
   fetchTrainingUnits(): void {
     if (this.workoutPlanId) {
       this.workoutsService.getTrainingUnits(this.workoutPlanId, this.currentPage).subscribe((data: any[]) => {
-        this.initializeTasks(); // Clear existing tasks
+        this.initializeTasks();
         data.forEach(dayData => {
           const day = this.convertDayOfWeek(dayData.dayOfWeek);
           if (day) {
             this.tasks[day] = dayData.exercises;
-            this.trainingUnitIds[day] = dayData.id; // Przypisz trainingUnitId dla każdego dnia
-            this.versions[day] = dayData.version; // Przypisz version dla każdego dnia
+            this.trainingUnitIds[day] = dayData.id;
+            this.versions[day] = dayData.version;
           }
         });
       });
@@ -186,8 +186,8 @@ export class MenteeWorkoutPlanComponent implements OnInit {
         exercises: this.exercises,
         workoutPlanId: this.workoutPlanId,
         currentPage: this.currentPage,
-        trainingUnitId: this.trainingUnitIds[day], // Przekaż trainingUnitId do dialogu
-        version: this.versions[day] // Przekaż version do dialogu
+        trainingUnitId: this.trainingUnitIds[day],
+        version: this.versions[day]
       }
     });
 
@@ -206,9 +206,9 @@ export class MenteeWorkoutPlanComponent implements OnInit {
         exercises: this.exercises,
         workoutPlanId: this.workoutPlanId,
         currentPage: this.currentPage,
-        trainingUnitId: this.trainingUnitIds[day], // Przekaż trainingUnitId do dialogu
-        version: this.versions[day], // Przekaż version do dialogu
-        day // Przekaż day do dialogu
+        trainingUnitId: this.trainingUnitIds[day],
+        version: this.versions[day],
+        day
       }
     });
 
@@ -220,7 +220,7 @@ export class MenteeWorkoutPlanComponent implements OnInit {
   }
 
   deleteExerciseItem(task: ExerciseItemProjection): void {
-    const dto = {id: task.id, version: task.version};  // Prepare the BasicAuditDto
+    const dto = {id: task.id, version: task.version};
     this.workoutsService.deleteExerciseItem(task.id, dto).subscribe({
       next: () => {
         this.snackBar.open('Exercise item deleted successfully!', 'Close', {duration: 3000});

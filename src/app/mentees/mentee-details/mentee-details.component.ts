@@ -108,7 +108,7 @@ export class MenteeDetailsComponent implements OnInit {
   }
 
   deleteWorkoutPlan(workoutPlan: WorkoutPlan): void {
-    const dto = {id: workoutPlan.id, version: workoutPlan.version};  // Prepare the BasicAuditDto
+    const dto = {id: workoutPlan.id, version: workoutPlan.version};
     this.menteeService.deleteWorkoutPlan(workoutPlan.id, dto).subscribe({
       next: () => {
         this.snackBar.open('Workout plan deleted successfully!', 'Close', {duration: 3000});

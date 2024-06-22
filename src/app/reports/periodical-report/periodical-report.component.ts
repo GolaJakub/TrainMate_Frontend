@@ -61,10 +61,10 @@ export class PeriodicalReportComponent implements OnInit {
       hips: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       weight: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       bodyFat: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      images: this.fb.array([]) // Add a FormArray for images
+      images: this.fb.array([])
     });
 
-    this.addImageField(); // Add the initial image field
+    this.addImageField();
   }
 
   get imageControls() {
@@ -255,7 +255,7 @@ export class PeriodicalReportComponent implements OnInit {
       waist: formData.waist,
       abdomen: formData.abdomen,
       hips: formData.hips,
-      images: formData.images?.filter((image: any) => image.name) // Filter out empty image fields
+      images: formData.images?.filter((image: any) => image.name)
         .map((image: any) => ({
           storageId: image.storageId?.value ? {value: image.storageId.value} : undefined,
           content: image.content,
