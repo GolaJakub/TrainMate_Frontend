@@ -1,7 +1,6 @@
 <div class="container mt-4">
   <div class="card shadow">
-    <div
-      class="card-header bg-dark d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
+    <div class="card-header bg-dark d-flex flex-wrap justify-content-center align-items-center justify-content-sm-between gap-3">
       <h5 class="display-6 text-nowrap text-capitalize text-white mb-0">Edit Exercise</h5>
     </div>
     <div class="card-body">
@@ -22,7 +21,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="repetitions">Repetitions</label>
-          <input class="form-control form-control-sm" formControlName="repetitions" id="repetitions" type="number">
+          <input class="form-control form-control-sm" formControlName="repetitions" id="repetitions" type="number" min="0" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <div class="mb-3">
           <label class="form-label" for="tempo">Tempo</label>
@@ -30,15 +29,15 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="weight">Weight</label>
-          <input class="form-control form-control-sm" formControlName="weight" id="weight" type="number">
+          <input class="form-control form-control-sm" formControlName="weight" id="weight" type="number" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
         </div>
         <div class="mb-3">
           <label class="form-label" for="rir">RIR</label>
-          <input class="form-control form-control-sm" formControlName="rir" id="rir" type="number">
+          <input class="form-control form-control-sm" formControlName="rir" id="rir" type="number" min="0" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         <div class="mb-3">
           <label class="form-label" for="sets">Sets</label>
-          <input class="form-control form-control-sm" formControlName="sets" id="sets" type="number">
+          <input class="form-control form-control-sm" formControlName="sets" id="sets" type="number" min="0" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
       </form>
     </div>
