@@ -19,7 +19,7 @@
     <div class="card-body">
       <div class="container">
         <div class="row">
-          <div *ngFor="let day of days" class="col">
+          <div *ngFor="let day of days; let i = index" class="col">
             <div class="day-header p-3 mb-4 rounded text-center">
               <h3>{{ day }}</h3>
             </div>
@@ -63,7 +63,7 @@
               </div>
             </div>
             <!-- Add exercise tile -->
-            <div (click)="openAddExerciseModal(day)" class="task p-3 mb-3 rounded text-center" style="cursor: pointer;">
+            <div *ngIf="shouldShowAddExerciseButton(i)" (click)="openAddExerciseModal(day)" class="task p-3 mb-3 rounded text-center" style="cursor: pointer;">
               <h4>+ Add Exercise</h4>
             </div>
           </div>

@@ -10,13 +10,15 @@ import {
   WorkoutPlanProjection,
 } from '../../../workouts/workouts.model';
 import {ExerciseDetailDialog} from '../../../workouts/mentee-workouts/mentee-workouts.component';
-import {NgClass, NgForOf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ExerciseListItemProjection} from "../../../exercises/exercise.data";
 import {AddExerciseToTrainingUnitDialog} from "./add-exercise-to-training-unit.dialog";
 import {ExerciseService} from "../../../exercises/exercises.service";
 import {EditExerciseDialog} from "./edit-exercise-dialog";
 import {ExerciseReportDialog} from "../../../workouts/exercise-report-dialog/exercise-report-dialog.component";
+import moment from 'moment';
+
 
 @Component({
   selector: 'tm-mentee-workouts',
@@ -25,7 +27,8 @@ import {ExerciseReportDialog} from "../../../workouts/exercise-report-dialog/exe
   imports: [
     NgForOf,
     NgClass,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgIf
   ],
   styleUrls: ['./mentee-workout-plan.component.css']
 })
@@ -43,6 +46,10 @@ export class MenteeWorkoutPlanComponent implements OnInit {
   workoutPlanId: number = 0;
   workoutPlan: WorkoutPlanProjection | null = null;
   exercises: ExerciseListItemProjection[] = [];
+  startDate: moment.Moment | null = null;
+  endDate: moment.Moment | null = null;
+  startDayOfWeek: number | null = null;
+  endDayOfWeek: number | null = null;
 
   constructor(private workoutsService: WorkoutsService, private route: ActivatedRoute, private snackBar: MatSnackBar, private dialog: MatDialog, private exercisesService: ExerciseService) {
   }
@@ -52,6 +59,12 @@ export class MenteeWorkoutPlanComponent implements OnInit {
     this.workoutsService.getWorkoutPlanHeader(this.workoutPlanId).subscribe(header => {
       this.workoutPlan = header;
       this.totalWeeks = this.workoutPlan.duration;
+
+      this.startDate = moment(this.workoutPlan.dateRange.from);
+      this.endDate = moment(this.workoutPlan.dateRange.to);
+
+      this.startDayOfWeek = this.startDate.isoWeekday();
+      this.endDayOfWeek = this.endDate.isoWeekday();
     });
     this.initializeTasks();
     this.fetchTrainingUnits();
@@ -230,5 +243,18 @@ export class MenteeWorkoutPlanComponent implements OnInit {
         this.snackBar.open('Error deleting exercise item: ' + err.message, 'Close', {duration: 3000});
       }
     });
+  }
+
+
+  shouldShowAddExerciseButton(dayIndex: number): boolean {
+    if (this.currentPage === 1 && this.startDayOfWeek !== null) {
+      const adjustedStartDayOfWeek = this.startDayOfWeek - 1;
+      return dayIndex >= adjustedStartDayOfWeek;
+    }
+    if (this.currentPage === this.totalWeeks && this.endDayOfWeek !== null) {
+      const adjustedEndDayOfWeek = this.endDayOfWeek - 1;
+      return dayIndex <= adjustedEndDayOfWeek;
+    }
+    return true;
   }
 }
